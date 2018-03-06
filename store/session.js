@@ -5,9 +5,6 @@ const tokenStorageKey = "token"
 
 
 export const state = () => ({
-  started: null,
-  elapsed: null,
-  expires: null,
   token: {
     jwt: "",
     ttl: 0,
@@ -60,10 +57,6 @@ export const mutations = {
     return false
   },
 
-  setStartTime(state) {
-    state.started = new Date().getTime()
-  },
-
 }
 
 export const actions = {
@@ -74,9 +67,13 @@ export const actions = {
   },
 
   start({commit, state}, token) {
-    commit("setToken", token)  // store token
-    commit("validateToken")    // initial validation sets various values
-    commit("setStartTime")
+
+    // store token
+    commit("setToken", token)
+
+    // initial validation sets various values
+    commit("validateToken")
+
     console.log("Session monitor starting...")
     const ms = 1000
     let i = setInterval(() => {

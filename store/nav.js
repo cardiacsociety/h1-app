@@ -3,7 +3,7 @@ export const state = () => ({
   mainMenu: [
     {
       name: "activities",
-      to: "/activities",
+      to: "/activities/home/overview",
     },
     {
       name: "auth",
@@ -38,7 +38,7 @@ export const state = () => ({
   activities: [
     {
       name: "",
-      to: "/activities/home",
+      to: "/activities/home/overview",
       iconClass: "fa fa-home",
       subsubnav: [
         {

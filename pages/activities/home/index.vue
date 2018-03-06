@@ -2,7 +2,7 @@
 </template>
 <script>
   export default {
-    beforeCreate() {
+    created() {
       this.$router.push('/activities/home/overview')
     },
   }

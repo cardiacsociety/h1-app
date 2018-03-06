@@ -111,7 +111,6 @@
         this.subnav.forEach((item) => {
           const parentPath = this.$route.path.substring(0, item.to.length)
           if (parentPath == item.to) {
-            console.log("yes")
             ssn = item.subsubnav
           }
         })
