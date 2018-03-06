@@ -12,12 +12,14 @@
   },
   "dependencies": {
     "@nuxtjs/axios": "^5.0.0",
+    "@nuxtjs/bulma": "^1.0.3",
     "@nuxtjs/font-awesome": "^1.0.3",
-    "nuxt-bulma-slim": "^0.3.0",
     "jwt-decode": "^2.2.0",
     "nuxt": "^1.0.0"
   },
   "devDependencies": {
-    "cross-env": "^5.0.1"
+    "cross-env": "^5.0.1",
+    "node-sass": "^4.7.2",
+    "sass-loader": "^6.0.7"
   }
 }

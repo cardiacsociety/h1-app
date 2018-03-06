@@ -27,6 +27,7 @@ module.exports = {
   ** Global CSS
   */
   css: [
+    { src: '~assets/styles/custom.scss', lang: 'scss' }
   ],
 
   /*
@@ -42,18 +43,8 @@ module.exports = {
   modules: [
     // Doc: https://github.com/nuxt-community/axios-module#usage
     '@nuxtjs/axios',
-
     // Doc:https://github.com/nuxt-community/modules/tree/master/packages/bulma
-    //'@nuxtjs/bulma'
-    // https://github.com/mustardamus/nuxt-bulma-slim
-    // don't use ~/ path shortcut!
-    [
-      'nuxt-bulma-slim',
-      {
-        variablesPath: 'assets/styles/custom.scss'
-      }
-    ],
-
+    //'@nuxtjs/bulma',
     '@nuxtjs/font-awesome',
   ],
 

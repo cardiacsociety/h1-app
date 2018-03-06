@@ -1,17 +1,18 @@
-//@import "~bulma/sass/utilities/initial-variables";
-//@import "~bulma/sass/utilities/functions";
+@import "~bulma/sass/utilities/initial-variables";
+@import "~bulma/sass/utilities/functions";
 
 // customisations
 $blue: #106BD9;
 $primary: $blue;
 $red: #FF0D22;
 
-//$navbar-item-active-color: $blue;
+$navbar-item-active-color: $blue;
 
 // justify content p text on mobiles
 .content p {
   @extend .has-text-justified-mobile;
 }
 
-// using bulma-slim module
-//@import "~bulma/bulma";
+@import "~bulma/bulma";
+
+
