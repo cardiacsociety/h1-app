@@ -8,12 +8,18 @@
 $primary: $blue;
 //$info: #2E86C1;
 
-
 $navbar-item-active-color: $blue;
 
 // justify content p text on mobiles
 .content p {
   @extend .has-text-justified-mobile;
+}
+
+// <em> tags wraps search terms in vue-instantsearch - tried to use scoped style but did not work
+em {
+  font-weight: bold;
+  font-style: normal;
+  background-color: yellow;
 }
 
 @import "~bulma/bulma";

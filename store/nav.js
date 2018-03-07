@@ -11,7 +11,7 @@ export const state = () => ({
     },
     {
       name: "setup",
-      to: "/setup",
+      to: "/setup/home",
     },
     {
       name: "tools",

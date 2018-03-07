@@ -15,7 +15,8 @@
     "@nuxtjs/bulma": "^1.0.3",
     "@nuxtjs/font-awesome": "^1.0.3",
     "jwt-decode": "^2.2.0",
-    "nuxt": "^1.0.0"
+    "nuxt": "^1.0.0",
+    "vue-instantsearch": "^1.5.1"
   },
   "devDependencies": {
     "cross-env": "^5.0.1",

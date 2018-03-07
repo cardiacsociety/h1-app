@@ -35,6 +35,7 @@ module.exports = {
   */
   plugins: [
     '~/plugins/global-components.js',
+    '~/plugins/instantsearch.js',
   ],
 
   /*
