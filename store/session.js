@@ -21,10 +21,25 @@ export const mutations = {
     state.token.jwt = jwt
   },
 
+  deleteToken(state) {
+    localStorage.removeItem(tokenStorageKey)
+    state.token.jwt = ""
+    state.token.ttl = 0
+    state.token.decoded = {}
+    state.token.valid = false
+    state.token.message = "Session was destroyed by user logout"
+  },
+
   validateToken(state) {
 
-    // check token in local storage matches token in store
+    // check token in local storage vs token in store
     const t = localStorage.getItem(tokenStorageKey)
+
+    if (!t || t.length < 50) {
+      return false
+    }
+
+    // match
     if (t != state.token.jwt) {
       state.token.valid = false
       state.token.message = "Token in vuex store does not match token in local storage"
@@ -84,6 +99,10 @@ export const actions = {
       }
     }, ms)
   },
+
+  destroy({commit, state}) {
+    commit("deleteToken")
+  }
 
 }
 

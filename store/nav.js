@@ -6,18 +6,6 @@ export const state = () => ({
       to: "/activities/home/overview",
     },
     {
-      name: "auth",
-      to: "/auth",
-    },
-    {
-      name: "help",
-      to: "/help",
-    },
-    {
-      name: "home",
-      to: "/home",
-    },
-    {
       name: "resources",
       to: "/resources",
     },
@@ -26,12 +14,12 @@ export const state = () => ({
       to: "/setup",
     },
     {
-      name: "test",
-      to: "/test",
-    },
-    {
       name: "tools",
       to: "/tools",
+    },
+    {
+      name: "help",
+      to: "/help",
     },
   ],
 
