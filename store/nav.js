@@ -7,7 +7,7 @@ export const state = () => ({
     },
     {
       name: "resources",
-      to: "/resources",
+      to: "/resources/library/search",
     },
     {
       name: "setup",
@@ -49,6 +49,38 @@ export const state = () => ({
         {name: "three", to: "/activities/test/three"},
       ],
     },
+  ],
+
+  resources: [
+    {
+      name: "library",
+      to: "/resources/library",
+      iconClass: "",
+      subsubnav: [
+        {name: "search", to: "/resources/library/search"},
+        {name: "latest", to: "/resources/library/latest"},
+      ],
+    },
+  ],
+
+  setup: [
+    {
+      name: "",
+      to: "/setup/home",
+      iconClass: "fa fa-home",
+    },
+    {
+      name: "CPD",
+      to: "/setup/cpd",
+      iconClass: "",
+    },
+    {
+      name: "profile",
+      to: "/setup/profile",
+      iconClass: "",
+    },
   ]
+
+
 
 })

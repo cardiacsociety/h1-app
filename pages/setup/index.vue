@@ -1,11 +1,9 @@
 <template>
-  <div>
-    <PageHeader
-      title="Setup"
-      subtitle="Configure options such as recurring CPD"
-    />
-    <PageSection>
-      <p>Setup section</p>
-    </PageSection>
-  </div>
 </template>
+<script>
+  export default {
+    beforeMount() {
+      this.$router.push("/setup/home")
+    },
+  }
+</script>

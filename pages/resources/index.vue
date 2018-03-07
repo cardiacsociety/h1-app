@@ -1,11 +1,9 @@
 <template>
-  <div>
-    <PageHeader
-      title="Resources"
-      subtitle="Search the library for anything of interest"
-    />
-    <PageSection>
-      <p>Resources search</p>
-    </PageSection>
-  </div>
 </template>
+<script>
+  export default {
+    beforeMount() {
+      this.$router.push("/resources/library/search")
+    }
+  }
+</script>
