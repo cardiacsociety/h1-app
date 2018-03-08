@@ -63,4 +63,8 @@
   .heartbeat:hover {
     cursor: pointer;
   }
+  .navbar-burger span {
+    height: 2px;
+    width: 1.2rem;
+  }
 </style>
