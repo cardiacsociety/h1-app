@@ -17,61 +17,58 @@
           <ais-stats/>
         </p>
       </div>
-      <ais-results :stack="true">
+      <ais-results :stack="false">
         <template slot-scope="{ result }">
           <div class="box search-result">
-              <h5 class="title is-5">
-                <ais-highlight :result="result" attribute-name="name"></ais-highlight>
-              </h5>
-              <p class="subtitle is-6 is-italic has-text-grey-light">
-                <a :href="result.shortUrl" target="_blank">{{ resourceLinkText(result) }}</a>
-              </p>
+            <h5 class="title is-5 is-marginless">
+              <ais-highlight :result="result" attribute-name="name"></ais-highlight>
+            </h5>
+            <ActivityModal
+              :activityTypesData="activityTypes"
+              :activityData="{description: result.name + '\r\n' + result.shortUrl}"
+            >
+              <template slot="open">
+                <p class="subtitle is-6 is-italic has-text-grey-light">
+                  <a @click="openResource(result.shortUrl)">{{ resourceLinkText(result) }}</a>
+                </p>
+              </template>
+            </ActivityModal>
+
             <ais-snippet :result="result" attribute-name="description"></ais-snippet>
-            <!--<div>-->
-            <!--<app-activity-form-->
-            <!--:activityTypesData="activityTypes"-->
-            <!--:activityData="{description: result.name + '\r\n' + result.shortUrl}"-->
-            <!--&gt;-->
-            <!--<v-btn-->
-            <!--slot="activator"-->
-            <!--class="resource-link"-->
-            <!--color="blue darken-1" flat-->
-            <!--@click="openResource(result.shortUrl)"-->
-            <!--&gt;{{ result.shortUrl }}-->
-            <!--</v-btn>-->
-            <!--</app-activity-form>-->
-            <!--<v-divider></v-divider>-->
-            <!--</div>-->
+
           </div>
         </template>
       </ais-results>
 
-      <!--<div id="loadmore">-->
-      <!--<v-progress-circular indeterminate color="primary"></v-progress-circular>-->
-      <!--loading more-->
-      <!--</div>-->
+      <div id="loadmore">
+        <i class="fa fa-spinner fa-pulse"></i> loading more
+      </div>
+
+      <div>
+        <button class="button is-success" @click="loadMore">load more</button>
+      </div>
+
+      <div>
+      </div>
+
     </ais-index>
   </div>
 </template>
 
 <script>
   import Config from '~/config'
-  //import ScrollMonitor from 'scrollmonitor'
-
-  import ResourceDescription from '~/components/Resources/ResourceDescription.vue'
-  //import Form from '../activities/ActivityForm.vue'
+  import ActivityModal from '~/components/Activity/ActivityModal.vue'
 
   export default {
 
     components: {
-      appResourceDescription: ResourceDescription,
-      //appActivityForm: Form
+      ActivityModal,
     },
+
 
     data() {
       return {
         Config,
-        expand: false,
         page: 1,
       }
     },
@@ -88,13 +85,11 @@
       // create link test for a search result
       resourceLinkText(result) {
 
-        //return result.sourceNameAbbrev
-
         let t = (result.sourceNameAbbrev ? result.sourceNameAbbrev : '') +
           (result.sourcePubDate ? result.sourcePubDate : '') +
-          (result.sourceVolume ? '; '+result.sourceVolume : '') +
-          (result.sourceIssue ? '('+result.sourceIssue+')' : '') +
-          (result.sourcePages ? ': '+result.sourcePages : '')
+          (result.sourceVolume ? '; ' + result.sourceVolume : '') +
+          (result.sourceIssue ? '(' + result.sourceIssue + ')' : '') +
+          (result.sourcePages ? ': ' + result.sourcePages : '')
 
         if (t) {
           return t
@@ -108,19 +103,10 @@
         window.open(url)
       },
 
-
       loadMore: function () {
         this.page++;
       },
     },
-
-    mounted() {
-      // let e = document.getElementById('loadmore')
-      // let w = ScrollMonitor.create(e)
-      // w.enterViewport(() => {
-      //     this.loadMore()
-      // })
-    }
   }
 </script>
 

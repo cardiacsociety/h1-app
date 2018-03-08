@@ -19,7 +19,7 @@ $navbar-item-active-color: $blue;
 em {
   font-weight: bold;
   font-style: normal;
-  background-color: yellow;
+  background-color: $yellow;
 }
 
 @import "~bulma/bulma";
