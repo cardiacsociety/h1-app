@@ -1,29 +1,61 @@
 <template>
   <div>
-    <!--click wrapper as cannot listen for click on a slot-->
-    <span @click="openForm">
-      <slot name="open">open form</slot>
-    </span>
-    <div class="modal" :class="{'is-active': open}">
-      <div class="modal-background"></div>
-      <div class="modal-content">
-        <div class="field">
-          <label class="label">Name</label>
-          <div class="control">
-            <input class="input" type="text" placeholder="Text input">
-          </div>
-        </div>
+    <div class="field">
+      <label class="label">Date</label>
+      <div class="control">
+        <DatePicker placeholder="European Format ('d-m-Y')"
+                    :config="{ dateFormat: 'd-m-Y', static: true }"></DatePicker>
       </div>
-      <button class="modal-close is-large" aria-label="close" @click="closeForm"></button>
+    </div>
+
+    <div class="field">
+      <label class="label">Date</label>
+      <div class="control">
+        <DatePicker :config="{ wrap: true }" readonly>
+          <a class="button" data-toggle><i class="fa fa-calendar"></i></a>
+          <a class="button" data-clear><i class="fa fa-close"></i></a>
+        </DatePicker>
+      </div>
+    </div>
+
+    <div class="field">
+      <label class="label">Name</label>
+      <div class="control">
+        <input class="input" type="text" placeholder="Text input">
+      </div>
+    </div>
+    <div class="field">
+      <label class="label">Name</label>
+      <div class="control">
+        <input class="input" type="text" placeholder="Text input">
+      </div>
+    </div>
+    <div class="field">
+      <label class="label">Name</label>
+      <div class="control">
+        <input class="input" type="text" placeholder="Text input">
+      </div>
+    </div>
+    <div class="field">
+      <label class="label">Name</label>
+      <div class="control">
+        <input class="input" type="text" placeholder="Text input">
+      </div>
+    </div>
+    <div class="field">
+      <label class="label">Name</label>
+      <div class="control">
+        <input class="input" type="text" placeholder="Text input">
+      </div>
     </div>
   </div>
 </template>
 
 <script>
-  // import {EventBus} from '../../main'
   // import moment from 'moment'
   // import activities from '../../data/activities'
   // import DateField from '../form/DateField.vue'
+  import DatePicker from 'vue-bulma-datepicker'
 
   export default {
     props: {
@@ -47,8 +79,9 @@
     },
 
     components: {
-      //appFormDateField: DateField
+      DatePicker,
     },
+
 
     data() {
       return {

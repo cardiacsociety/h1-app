@@ -7,15 +7,21 @@
     <div class="modal" :class="{'is-active': open}">
       <div class="modal-background"></div>
       <div class="modal-content">
-        <div class="notification is-info">
+
+        <div class="notification is-info" v-if="!activityFormOpen">
+          <button class="delete" @click="closeModal"></button>
           <h4 class="title is-4">You opened a resource.</h4>
           <p class="subtitle is-6">Would you like to record CPD activity?</p>
           <p>
-            <button class="button is-success is-large is-bold">Yes please</button>&nbsp;
+            <button class="button is-success is-large is-bold" @click="activityFormOpen = true">Yes please</button>&nbsp;
             <button class="button is-danger  is-large is-bold" @click="closeModal">No thanks</button>
           </p>
-
         </div>
+        <div class="box" v-if="activityFormOpen">
+          <button class="delete" @click="closeModal"></button>
+          <ActivityForm/>
+        </div>
+
       </div>
       <button class="modal-close is-large" aria-label="close" @click="closeModal"></button>
     </div>
@@ -23,6 +29,8 @@
 </template>
 
 <script>
+  import ActivityForm from "~/components/Activity/ActivityForm"
+
   // import {EventBus} from '../../main'
   // import moment from 'moment'
   // import activities from '../../data/activities'
@@ -50,13 +58,14 @@
     },
 
     components: {
-      //appFormDateField: DateField
+      ActivityForm,
     },
 
     data() {
       return {
 
         open: false,
+        activityFormOpen: false,
         errorAlert: false,
         errorMessage: null,
 

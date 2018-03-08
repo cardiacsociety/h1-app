@@ -1,6 +1,7 @@
 const pkg = require('./package')
 
 module.exports = {
+
   mode: 'spa',
 
   /*
@@ -9,33 +10,39 @@ module.exports = {
   head: {
     title: pkg.name,
     meta: [
-      { charset: 'utf-8' },
-      { name: 'viewport', content: 'width=device-width, initial-scale=1' },
-      { hid: 'description', name: 'description', content: pkg.description }
+      {charset: 'utf-8'},
+      {name: 'viewport', content: 'width=device-width, initial-scale=1'},
+      {hid: 'description', name: 'description', content: pkg.description}
     ],
     link: [
-      { rel: 'icon', type: 'image/x-icon', href: '/favicon.ico' }
+      {rel: 'icon', type: 'image/x-icon', href: '/favicon.ico'}
     ]
   },
 
   /*
   ** Customize the progress-bar color
   */
-  loading: { color: '#3B8070' },
+  loading: {color: '#3B8070'},
 
   /*
   ** Global CSS
   */
   css: [
-    { src: '~assets/styles/custom.scss', lang: 'scss' }
+    {src: '~assets/styles/custom.scss', lang: 'sass'}
   ],
 
   /*
   ** Plugins to load before mounting the App
   */
   plugins: [
-    '~/plugins/global-components.js',
-    '~/plugins/instantsearch.js',
+    '~plugins/global-components',
+    '~plugins/instantsearch',
+
+
+    // can only get customisations to work by using script tag in default layout
+    // example: https://github.com/rafaelpimpa/buefy-simple/blob/master/src/App.vue
+    // won't load customisations from custom.scss
+    //'~plugins/buefy',
   ],
 
   /*
@@ -58,7 +65,7 @@ module.exports = {
 
   /*
   ** Build configuration
-  */
+  // */
   build: {
     postcss: {
       plugins: {
@@ -68,12 +75,13 @@ module.exports = {
           }
         }
       }
-    },
-    /*
-    ** You can extend webpack config here
-    */
-    extend(config, ctx) {
-
     }
   },
+  /*
+  ** You can extend webpack config here
+  */
+  extend(config, ctx) {
+
+  },
 }
+
