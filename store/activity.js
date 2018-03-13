@@ -1,6 +1,6 @@
 import Config from '~/config'
-// not using... probably remove
-//import { request } from 'graphql-request'
+
+const graphqlUrl = Config.GRAPHQL_API_BASE_URL
 
 export const state = () => ({
   activityTypes: [],
@@ -35,7 +35,7 @@ export const actions = {
             }`
 
     let r = {
-      url: "http://localhost:5001/graphql",
+      url: graphqlUrl,
       method: "post",
       headers: {'Content-Type': 'application/json'},
       data: JSON.stringify(query),
@@ -70,7 +70,7 @@ export const actions = {
     const variables = {token: token}
 
     let r = {
-      url: "http://localhost:5001/graphql",
+      url: graphqlUrl,
       method: "post",
       headers: {'Content-Type': 'application/json'},
       data: JSON.stringify({query, variables}),

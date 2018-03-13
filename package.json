@@ -22,7 +22,6 @@
   },
   "devDependencies": {
     "cross-env": "^5.0.1",
-    "graphql-request": "^1.5.1",
     "node-sass": "^4.7.2",
     "sass-loader": "^6.0.7",
     "stylus": "^0.54.5",

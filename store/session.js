@@ -2,7 +2,7 @@ import Config from '~/config'
 import jwtDecode from 'jwt-decode'
 
 const tokenStorageKey = "token"
-
+const authUrl = Config.API_URL_AUTH
 
 export const state = () => ({
   token: {
@@ -78,7 +78,7 @@ export const actions = {
 
   // authenticate against api, start session on success
   async auth({commit, dispatch, state}, body) {
-    return await this.$axios.$post(Config.API_URL_AUTH, body)
+    return await this.$axios.$post(authUrl, body)
   },
 
   start({commit, state}, token) {
