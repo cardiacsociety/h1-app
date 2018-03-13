@@ -1,60 +1,94 @@
 <template>
   <div>
-    <div class="field">
-      <label class="label">Date</label>
-      <div class="control">
-        <DatePicker placeholder="European Format ('d-m-Y')"
-                    :config="{ dateFormat: 'd-m-Y', static: true }"></DatePicker>
-      </div>
-    </div>
 
     <div class="field">
       <label class="label">Date</label>
-      <div class="control">
-        <DatePicker :config="{ wrap: true }" readonly>
-          <a class="button" data-toggle><i class="fa fa-calendar"></i></a>
-          <a class="button" data-clear><i class="fa fa-close"></i></a>
+      <div class="control has-icons-left">
+        <DatePicker name="date" placeholder="select date of activity" readonly
+                    :config="{defaultDate: dateToday }"
+                    v-model="form.date"
+        >
         </DatePicker>
+        <span class="icon is-small is-left">
+          <i class="fa fa-calendar"></i>
+        </span>
+        <div class="help">
+            <span>&nbsp;</span>
+        </div>
       </div>
     </div>
 
     <div class="field">
-      <label class="label">Name</label>
-      <div class="control">
-        <input class="input" type="text" placeholder="Text input">
+      <label class="label">Quantity (hours)</label>
+      <div :class="{ 'control': true }">
+        <input name="quantity" type="text" placeholder="eg 0.25"
+               v-model="form.quantity"
+               v-validate="'required|decimal:2|min_value:0.25|max_value:24'"
+               :class="{'input': true, 'is-danger': errors.has('quantity') }"
+        >
+        <div class="help">
+          <span v-if="errors.has('quantity')" class="has-text-danger">
+            {{ errors.first('quantity') }}
+          </span>&nbsp;
+        </div>
       </div>
     </div>
+
     <div class="field">
-      <label class="label">Name</label>
+      <label class="label">Activity</label>
       <div class="control">
-        <input class="input" type="text" placeholder="Text input">
+        <div :class="{'select': true, 'is-danger': errors.has('activityTypeId')}">
+          <select name="activityTypeId"
+                  v-model="form.activityTypeId"
+                  v-on:change="setActivityId"
+                  v-validate="'required|numeric'"
+          >
+            <optgroup v-for="activity in activityTypes" :label="activity.name + ' (' + activity.code +')'">
+              <option v-for="type in activity.types" :value="type.id">
+                {{ type.name }}
+              </option>
+            </optgroup>
+          </select>
+        </div>
+        <div class="help">
+            <span v-if="errors.has('activityTypeId')" class="has-text-danger">
+              {{ errors.first('activityTypeId') }}
+            </span>&nbsp;
+        </div>
       </div>
     </div>
+
     <div class="field">
-      <label class="label">Name</label>
+      <label class="label">Description</label>
       <div class="control">
-        <input class="input" type="text" placeholder="Text input">
+        <textarea name="description" placeholder="Provide some details about the activity"
+                  v-model="form.description"
+                  v-validate="'required'"
+                  :class="{'textarea': true, 'is-danger': errors.has('description')}">
+        ></textarea>
+        <div class="help">
+          <span v-if="errors.has('description')" class="has-text-danger">
+            {{ errors.first('description') }}
+          </span>&nbsp;
+        </div>
       </div>
     </div>
+
     <div class="field">
-      <label class="label">Name</label>
       <div class="control">
-        <input class="input" type="text" placeholder="Text input">
+        <button class="button" v-if="!valid" v-on:click="validateForm">Save</button>
+        <button class="button is-success" v-if="valid" v-on:click="saveActivity">Save</button>&nbsp;
+        <button class="button">Cancel</button>
+        <div>valid: {{ valid }}</div>
+        <div>errors: {{ errors.items }}</div>
+        <div>form: {{ form }}</div>
       </div>
     </div>
-    <div class="field">
-      <label class="label">Name</label>
-      <div class="control">
-        <input class="input" type="text" placeholder="Text input">
-      </div>
-    </div>
+
   </div>
 </template>
 
 <script>
-  // import moment from 'moment'
-  // import activities from '../../data/activities'
-  // import DateField from '../form/DateField.vue'
   import DatePicker from 'vue-bulma-datepicker'
 
   export default {
@@ -86,149 +120,80 @@
     data() {
       return {
 
-        open: false,
-        errorAlert: false,
-        errorMessage: null,
-
-        timerSeconds: 30, // hack to avoid initial validation message
-        timerRunning: false,
-        intervalId: null,
-
-        // Form data elements
-        activity: {
-          id: null,
-          typeId: 5,
+        form: {
+          memberActivityId: null,
+          activityId: null,
+          activityTypeId: null,
           date: null,
-          quantity: 0,
-          description: "",
+          quantity: null,
+          description: null,
         },
-
-        lastQuantity: 0,
-
-        // Validation
-        quantityRules: [
-          (v) => !!v && v && v > 0 || "Required > 0"
-        ],
-        activityTypeRules: [
-          (v) => !!v || "Required"
-        ],
-        descriptionRules: [
-          (v) => v && v.length > 2 || "Required"
-        ],
-
       }
     },
 
     computed: {
-      timerColour() {
-        if (this.timerRunning) {
-          return 'green'
-        }
-        return 'red'
-      },
-      timerIcon() {
-        if (this.timerRunning) {
-          return 'pause'
-        }
-        return 'play_arrow'
+
+      dateToday() {
+        return new Date()
       },
 
-      date() {
-        if (this.activityData && this.activityData.date) {
-          return this.activityData.date
-        }
-        if (this.activity && this.activity.date) {
-          return this.activity.date
-        }
-        return ""
-      },
-
-
-      // activity types in select list
       activityTypes() {
-        return this.$store.state.activityTypes
+        return this.$store.state.activity.activityTypes
       },
 
-
-      // computed 'quantity' value for the text input. Only calculated when the timer is running to
-      // avoid interference with manual user input.
-      quantity: {
-        get() {
-          if (this.timerRunning) {
-            this.lastQuantity = (this.timerSeconds / 3600).toFixed(2)
-          }
-          return this.lastQuantity
-        },
-        // setter called when input is updated, by timer or user input
-        set(hours) {
-          this.timerSeconds = hours * 3600 // sets the timer value
-          this.lastQuantity = hours  // updates quantity (quantity) - see above
+      selectedActivityId() {
+        let id = 0
+        const a = this.$store.getters["activity/activitiesFlatArray"]
+        if (this.form.activityTypeId) {
+          id = a[this.form.activityTypeId]
+          this.form.activityId = id
         }
+
+        return id
       },
 
       valid: {
+
+        // default set to false
         set() {
           return false
         },
+
         get() {
-          if (this.activity.quantity
-            && this.activity.typeId
-            && this.activity.date
-            && this.activity.description) {
-            return true
+
+          // first check for non-falsey values...
+          if (this.form.activityId && this.form.activityTypeId && this.form.date && this.form.description) {
+
+            // then if no errors
+            if (!this.errors.items.length) {
+              return true
+            }
           }
+
           return false
         }
       },
 
-    },
-
-    watch: {
-      // sync the computed quantity with activity.quantity
-      quantity() {
-        this.activity.quantity = parseFloat(this.quantity)
-      }
     },
 
     methods: {
 
-      openForm() {
-        this.open = true
-        if (this.reset) {
-          this.resetForm()
-        }
+      // setActivityId is triggered when the user selects the activity type from the drop list.
+      // It sets the activity id which is the 'parent' type of the activity type selected using a computed value.
+      setActivityId() {
+        this.form.activityId = this.selectedActivityId
       },
 
-      closeForm() {
-        this.open = false
-        // if (this.reset) {
-        //   this.resetForm()
-        // }
-      },
+      validateForm() {
+        let v = false
+        this.$validator.validateAll()
+          .then(res => {
+            if (res) {
+              v = true
+            }
+          })
 
-      // setter for the date child component
-      setDate(date) {
-        this.activity.date = date
-      },
-
-      startTimer() {
-        this.timerRunning = true
-        this.IntervalId = setInterval(() => {
-          this.timerSeconds++
-        }, 1000)
-      },
-
-      stopTimer() {
-        this.timerRunning = false
-        clearInterval(this.IntervalId)
-      },
-
-      toggleTimer() {
-        if (this.timerRunning) {
-          this.stopTimer()
-        } else {
-          this.startTimer()
-        }
+        return false
       },
 
       // Save the activity, if we have an id we are updating, if not, adding
@@ -248,64 +213,95 @@
             this.errorAlert = true // this page error alert
             this.errorMessage = "Error saving..."
           })
+
+
       },
 
-      // clear form values - note, also clears the date
-      resetForm() {
-        this.$refs.form.reset()
-      }
+      //
+      // // clear form values - note, also clears the date
+      // resetForm() {
+      //   this.$refs.form.reset()
+      // }
 
     },
 
-    filters: {
-      timerDisplay(seconds) {
+    created() {
+      // set activityTypes
+      this.$store.dispatch("activity/setActivityTypes")
 
-        // by default moment.js will return the string "invalid date" if seconds
-        // is not a valid number. As we aren't really inputting date, it is a time
-        // catch this first and return our own message. Note this appears on the timer
-        // itself in place of 'hh:mm:ss' so it should be short and sweet.
-        if (isNaN(seconds) || seconds < 0) {
-          return "invalid time"
+      // activityData object can be used to initialise the local activity object
+      if (this.activityData) {
+
+        console.log("set activity data")
+
+        // id of member activity record (when editing)
+        if (this.activityData.memberActivityId) {
+          this.form.memberActivityId = this.activityData.memberActivityId
         }
 
-        return moment.utc(seconds * 1000).format('HH:mm:ss')
+        // activity
+        if (this.activityData.activityId) {
+          this.form.activityId = this.activityData.activityId
+        }
+
+        // activity TYPE id
+        if (this.activityData.activityTypeId) {
+          this.form.activityTypeId = this.activityData.activityTypeId
+        }
+
+        // date
+        if (this.activityData.date) {
+          this.form.date = this.activityData.date
+        }
+
+        // quantity (generally quantity)
+        if (this.activityData.quantity) {
+          this.form.quantity = this.activityData.quantity
+        }
+
+        // Description / details
+        if (this.activityData.description) {
+          this.form.description = this.activityData.description
+        }
       }
+
     },
+
 
     mounted() {
 
-      this.$nextTick(() => {
-
-        // activityData object can be used to initialise the local activity object
-        if (this.activityData) {
-
-          // id of member activity record (editing an existing record)
-          if (this.activityData.id) {
-            this.activity.id = this.activityData.id
-          }
-
-          // quantity (generally hours)
-          if (this.activityData.quantity) {
-            // initialise the computed value, watcher will set activity.quantity
-            this.quantity = this.activityData.quantity
-          }
-
-          // id of activity TYPE
-          if (this.activityData.typeId) {
-            this.activity.typeId = this.activityData.typeId
-          }
-
-          // Description / details
-          if (this.activityData.description) {
-            this.activity.description = this.activityData.description
-          }
-        }
-
-        // Start the timer if it is a new record
-        if (!this.activityData || !this.activityData.id) {
-          this.startTimer()
-        }
-      })
+      // this.$nextTick(() => {
+      //
+      //   // activityData object can be used to initialise the local activity object
+      //   if (this.activityData) {
+      //
+      //     // id of member activity record (editing an existing record)
+      //     if (this.activityData.id) {
+      //       this.activity.id = this.activityData.id
+      //     }
+      //
+      //     // quantity (generally quantity)
+      //     if (this.activityData.quantity) {
+      //       // initialise the computed value, watcher will set activity.quantity
+      //       this.quantity = this.activityData.quantity
+      //     }
+      //
+      //     // id of activity TYPE
+      //     if (this.activityData.typeId) {
+      //       this.activity.typeId = this.activityData.typeId
+      //     }
+      //
+      //     // Description / details
+      //     if (this.activityData.description) {
+      //       this.activity.description = this.activityData.description
+      //     }
+      //   }
+      //
+      //   // Start the timer if it is a new record
+      //   if (!this.activityData || !this.activityData.id) {
+      //     this.startTimer()
+      //   }
+      // })
 
     },
   }

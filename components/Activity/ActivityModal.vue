@@ -17,8 +17,9 @@
             <button class="button is-danger  is-large is-bold" @click="closeModal">No thanks</button>
           </p>
         </div>
-        <div class="box" v-if="activityFormOpen">
+        <div class="notification" v-if="activityFormOpen">
           <button class="delete" @click="closeModal"></button>
+          <h4 class="title is-4">Record CPD Activity</h4>
           <ActivityForm/>
         </div>
 

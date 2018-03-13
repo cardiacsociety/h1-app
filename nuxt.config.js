@@ -28,7 +28,7 @@ module.exports = {
   ** Global CSS
   */
   css: [
-    {src: '~assets/styles/custom.scss', lang: 'sass'}
+    {src: '~assets/styles/custom.scss', lang: 'sass'},
   ],
 
   /*
@@ -37,7 +37,7 @@ module.exports = {
   plugins: [
     '~plugins/global-components',
     '~plugins/instantsearch',
-
+    '~plugins/vee-validate',
 
     // can only get customisations to work by using script tag in default layout
     // example: https://github.com/rafaelpimpa/buefy-simple/blob/master/src/App.vue
