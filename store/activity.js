@@ -20,13 +20,18 @@ export const mutations = {
 
 export const actions = {
 
-  setActivityTypes({commit}) {
+  fetchActivityTypes({commit}) {
 
-    let query = `query {
+    let query = `query Activities {
               activities {
                 id
                 name
                 code
+                categoryId
+                categoryName
+                unitId
+                unitName
+                creditPerUnit
                 types {
                   id
                   name
@@ -38,11 +43,12 @@ export const actions = {
       url: graphqlUrl,
       method: "post",
       headers: {'Content-Type': 'application/json'},
-      data: JSON.stringify(query),
+      data: JSON.stringify({query}),
     }
 
     this.$axios(r)
       .then(res => {
+        console.log(res)
         // todo - prob only need to repeat this if the values are absent as they rarely change
         // axios returns a 'data' object, and the GraphQL server does too - that's why :)
         commit("setActivityTypes", res.data.data.activities)
@@ -54,20 +60,25 @@ export const actions = {
 
   fetchMemberActivities({commit}, token) {
 
+    const variables = {token: token}
+
     let query = `query ($token: String!) {
                    member(token: $token) {
                      id 
                      activities {
-                       id,
-                       date,
-                       credit,
-                       description,
-                       activity,
+                       id
+                       date
+                       description
+                       activity
+                       activityId
                        type
+                       typeId
+                       quantity
+                       creditPerUnit
+                       credit
                      }
                    }
                  }`
-    const variables = {token: token}
 
     let r = {
       url: graphqlUrl,
@@ -86,7 +97,60 @@ export const actions = {
       })
   },
 
+  saveMemberActivity(ctx, {token, memberActivity}) {
 
+    console.log("saveMemberActivity() in store...")
+    console.log("token", token)
+    console.log("memberActivity", memberActivity)
+
+    const variables = {token: token}
+
+    // id is optional and is flag for update or add. Can't pass null as a value so need to exclude id if it was
+    // not passed in, or is falsey
+    let query = `mutation Member($token: String!) {
+                   member(token: $token) {
+                     setActivity(obj: {` +
+                      (memberActivity.id ? `id: ${memberActivity.id}` : ``) +
+                      `date: "${memberActivity.date}"
+                      description: "${memberActivity.description}"
+                      quantity: ${memberActivity.quantity}
+                      typeId: ${memberActivity.typeId}
+                     }) 
+                     {
+                      id
+                      credit
+                     }
+                   }
+                 }`
+
+    let r = {
+      url: graphqlUrl,
+      method: "post",
+      headers: {'Content-Type': 'application/json'},
+      data: JSON.stringify({query, variables}),
+    }
+
+    this.$axios(r)
+      .then((res) => {
+        console.log("Member activity saved")
+        console.log(res)
+        // This is a bit inefficient but will do for now
+        // console.log("Resetting the store...")
+        // ctx.dispatch("fetchMemberActivities", token)
+        //   .then((r2) => {
+        //     console.log('Appeared to be successful')
+        //     console.log(r2)
+        //   })
+        //   .catch((e2) => {
+        //     console.log('An error occured')
+        //     console.log(e2)
+        //   })
+        //commit("setMemberActivities", res.data.data.member.activities)
+      })
+      .catch((err) => {
+        console.log(err)
+      })
+  }
 }
 
 export const getters = {
@@ -109,6 +173,6 @@ export const getters = {
     }
 
     return a
-  }
+  },
 
 }

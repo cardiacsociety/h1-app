@@ -37,9 +37,9 @@
     <div class="field">
       <label class="label">Activity</label>
       <div class="control">
-        <div :class="{'select': true, 'is-danger': errors.has('activityTypeId')}">
-          <select name="activityTypeId"
-                  v-model="form.activityTypeId"
+        <div :class="{'select': true, 'is-danger': errors.has('typeId')}">
+          <select name="typeId"
+                  v-model="form.typeId"
                   v-on:change="setActivityId"
                   v-validate="'required|numeric'"
           >
@@ -51,8 +51,8 @@
           </select>
         </div>
         <div class="help">
-            <span v-if="errors.has('activityTypeId')" class="has-text-danger">
-              {{ errors.first('activityTypeId') }}
+            <span v-if="errors.has('typeId')" class="has-text-danger">
+              {{ errors.first('typeId') }}
             </span>&nbsp;
         </div>
       </div>
@@ -77,10 +77,12 @@
     <div class="field">
       <div class="control">
         <button class="button" v-if="!valid" v-on:click="validateForm">Save</button>
-        <button class="button is-success" v-if="valid" v-on:click="saveActivity">Save</button>&nbsp;
-        <button class="button">Cancel</button>
+        <button class="button is-success" v-if="valid" v-on:click="saveActivity">Save</button>
+        &nbsp;<button class="button">Cancel</button>
+        <div>mode: {{ saveMode }}</div>
         <div>valid: {{ valid }}</div>
         <div>errors: {{ errors.items }}</div>
+        <div>props: {{ activityData }}</div>
         <div>form: {{ form }}</div>
       </div>
     </div>
@@ -121,9 +123,9 @@
       return {
 
         form: {
-          memberActivityId: null,
-          activityId: null,
-          activityTypeId: null,
+          id: null,
+          //activityId: null,
+          typeId: null,
           date: null,
           quantity: null,
           description: null,
@@ -133,6 +135,10 @@
 
     computed: {
 
+      token() {
+        return this.$store.state.session.token.jwt
+      },
+
       dateToday() {
         return new Date()
       },
@@ -141,11 +147,19 @@
         return this.$store.state.activity.activityTypes
       },
 
+      // add or edit flag
+      saveMode() {
+        if (this.activityData && this.activityData.id) {
+          return "update"
+        }
+        return "add"
+      },
+
       selectedActivityId() {
         let id = 0
         const a = this.$store.getters["activity/activitiesFlatArray"]
-        if (this.form.activityTypeId) {
-          id = a[this.form.activityTypeId]
+        if (this.form.typeId) {
+          id = a[this.form.typeId]
           this.form.activityId = id
         }
 
@@ -162,7 +176,8 @@
         get() {
 
           // first check for non-falsey values...
-          if (this.form.activityId && this.form.activityTypeId && this.form.date && this.form.description) {
+          //if (this.form.activityId && this.form.typeId && this.form.date && this.form.description) {
+          if (this.form.typeId && this.form.date && this.form.description) {
 
             // then if no errors
             if (!this.errors.items.length) {
@@ -180,6 +195,7 @@
 
       // setActivityId is triggered when the user selects the activity type from the drop list.
       // It sets the activity id which is the 'parent' type of the activity type selected using a computed value.
+      // NOTE - Don't need this value as the GraphQL server will set the correct activityId based on the typeId
       setActivityId() {
         this.form.activityId = this.selectedActivityId
       },
@@ -196,25 +212,9 @@
         return false
       },
 
-      // Save the activity, if we have an id we are updating, if not, adding
-      // Note: graphql works this out by the presence of the id, but keep seperate
-      // functions for now - in case we revert.
+
       saveActivity() {
-
-        activities.setMemberActivity(this.activity)
-          .then((r) => {
-            const updatedActivity = r.memberUser.setActivity
-            this.$store.commit('setMemberActivity', updatedActivity)
-            EventBus.$emit('alert', {text: "Activity updated!"}) // global 'snackbar' alert
-            this.open = false
-          })
-          .catch(() => {
-            console.log(r)
-            this.errorAlert = true // this page error alert
-            this.errorMessage = "Error saving..."
-          })
-
-
+        this.$store.dispatch("activity/saveMemberActivity", {token: this.token, memberActivity: this.form})
       },
 
       //
@@ -227,7 +227,7 @@
 
     created() {
       // set activityTypes
-      this.$store.dispatch("activity/setActivityTypes")
+      this.$store.dispatch("activity/fetchActivityTypes")
 
       // activityData object can be used to initialise the local activity object
       if (this.activityData) {
@@ -235,18 +235,18 @@
         console.log("set activity data")
 
         // id of member activity record (when editing)
-        if (this.activityData.memberActivityId) {
-          this.form.memberActivityId = this.activityData.memberActivityId
+        if (this.activityData.id) {
+          this.form.id = this.activityData.id
         }
 
         // activity
-        if (this.activityData.activityId) {
-          this.form.activityId = this.activityData.activityId
-        }
+        // if (this.activityData.activityId) {
+        //   this.form.activityId = this.activityData.activityId
+        // }
 
         // activity TYPE id
-        if (this.activityData.activityTypeId) {
-          this.form.activityTypeId = this.activityData.activityTypeId
+        if (this.activityData.typeId) {
+          this.form.typeId = this.activityData.typeId
         }
 
         // date
@@ -267,43 +267,6 @@
 
     },
 
-
-    mounted() {
-
-      // this.$nextTick(() => {
-      //
-      //   // activityData object can be used to initialise the local activity object
-      //   if (this.activityData) {
-      //
-      //     // id of member activity record (editing an existing record)
-      //     if (this.activityData.id) {
-      //       this.activity.id = this.activityData.id
-      //     }
-      //
-      //     // quantity (generally quantity)
-      //     if (this.activityData.quantity) {
-      //       // initialise the computed value, watcher will set activity.quantity
-      //       this.quantity = this.activityData.quantity
-      //     }
-      //
-      //     // id of activity TYPE
-      //     if (this.activityData.typeId) {
-      //       this.activity.typeId = this.activityData.typeId
-      //     }
-      //
-      //     // Description / details
-      //     if (this.activityData.description) {
-      //       this.activity.description = this.activityData.description
-      //     }
-      //   }
-      //
-      //   // Start the timer if it is a new record
-      //   if (!this.activityData || !this.activityData.id) {
-      //     this.startTimer()
-      //   }
-      // })
-
-    },
   }
 </script>
 

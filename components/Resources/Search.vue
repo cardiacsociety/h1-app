@@ -17,7 +17,7 @@
           <ais-stats/>
         </p>
       </div>
-      <ais-results :stack="false">
+      <ais-results :stack="true">
         <template slot-scope="{ result }">
           <div class="box search-result">
             <h5 class="title is-5 is-marginless">
@@ -40,16 +40,7 @@
         </template>
       </ais-results>
 
-      <div id="loadmore">
-        <i class="fa fa-spinner fa-pulse"></i> loading more
-      </div>
-
-      <div>
-        <button class="button is-success" @click="loadMore">load more</button>
-      </div>
-
-      <div>
-      </div>
+      <div id="loadmore"></div>
 
     </ais-index>
   </div>
@@ -57,6 +48,7 @@
 
 <script>
   import Config from '~/config'
+  import ScrollMonitor from 'scrollmonitor'
   import ActivityModal from '~/components/Activity/ActivityModal.vue'
 
   export default {
@@ -107,6 +99,15 @@
         this.page++;
       },
     },
+
+    mounted() {
+      let e = document.getElementById('loadmore')
+      let w = ScrollMonitor.create(e)
+      w.enterViewport(() => {
+        this.loadMore()
+      })
+    }
+
   }
 </script>
 

@@ -7,10 +7,17 @@
     />
     <PageSection>
       <h1>Activities Test Form</h1>
+
+      <a @click="setMemberActivityRecord(291)">291</a>&nbsp;
+      <a @click="setMemberActivityRecord(292)">292</a>
+
       <p>
-        <!--<ActivityForm :activityData="activityRecord" />-->
-        <ActivityForm />
+        <ActivityForm :activityData="activityData" />
       </p>
+
+      <div>
+        local activityRecord: {{ activityRecord }}
+      </div>
     </PageSection>
   </div>
 
@@ -26,18 +33,45 @@
       ActivityForm,
     },
 
-    data() {
-      return {
-        activityRecord: {
-          memberActivityId: 12345,
-          activityId: 20,
-          activityTypeId: 4,
-          date: "2017-11-03",
-          quantity: 1.5,
-          description: "lorem ipsumonia...",
-        }
+    props: {
+      activityData: {
+        type: Object,
       }
     },
+
+    data() {
+      return {
+        activityRecord: {},
+      }
+    },
+
+    computed: {
+
+      token() {
+        return this.$store.state.session.token.jwt
+      },
+    },
+
+    methods: {
+
+      setMemberActivityRecord(id) {
+        let editRecord = {}
+        this.$store.state.activity.memberActivities.forEach((a) => {
+          if (a.id === id) {
+            editRecord = a
+            return
+          }
+        })
+        this.activityRecord = Object.assign({}, editRecord)
+      }
+
+    },
+
+    beforeMount() {
+      this.$store.dispatch("activity/fetchMemberActivities", this.token)
+    },
+
+
 
   }
 </script>

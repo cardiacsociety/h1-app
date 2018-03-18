@@ -9,13 +9,13 @@
       <div class="modal-content">
 
         <div class="notification is-info" v-if="!activityFormOpen">
-          <button class="delete" @click="closeModal"></button>
+          <!--<button class="delete" @click="closeModal"></button>-->
           <h4 class="title is-4">You opened a resource.</h4>
-          <p class="subtitle is-6">Would you like to record CPD activity?</p>
-          <p>
-            <button class="button is-success is-large is-bold" @click="activityFormOpen = true">Yes please</button>&nbsp;
-            <button class="button is-danger  is-large is-bold" @click="closeModal">No thanks</button>
-          </p>
+          <div class="subtitle is-6">Would you like to record this activity?</div>
+          <div>
+            <button class="button is-success is-large" @click="activityFormOpen = true">Yes</button>&nbsp;
+            <button class="button is-danger  is-large" @click="closeModal">No</button>
+          </div>
         </div>
         <div class="notification" v-if="activityFormOpen">
           <button class="delete" @click="closeModal"></button>

@@ -7,6 +7,9 @@
     />
     <PageSection>
       <h1>Fetch Member Activities</h1>
+      <div v-for="a,i in memberActivities">
+        <nuxt-link to="/activities/test/one" :activityData="a" :key="i">{{a.id }}</nuxt-link>
+      </div>
       <pre>
         <code>
           {{ memberActivities }}
@@ -15,19 +18,25 @@
     </PageSection>
   </div>
 
+
 </template>
 
 <script>
   export default {
 
     computed: {
+
+      token() {
+        return this.$store.state.session.token.jwt
+      },
+
       memberActivities() {
         return this.$store.state.activity.memberActivities
       }
     },
 
     beforeMount() {
-      this.$store.dispatch("activity/fetchMemberActivities", localStorage.getItem("token"))
+      this.$store.dispatch("activity/fetchMemberActivities", this.token)
     }
 
   }
