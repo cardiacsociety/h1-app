@@ -108,6 +108,7 @@ export const actions = {
 
 export const getters = {
 
+  // todo - should this return token.jwt?
   token(state) {
     return state.token
   },

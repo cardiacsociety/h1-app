@@ -1,4 +1,7 @@
-export default function ({store, redirect}) {
+export default function ({store, route, redirect}) {
+
+  store.dispatch("nav/redirectAfterAuth", route.path)
+  console.log("[auth] will redirect to:", store.state.nav.authRedirect)
 
   // if session is valid, do nothing
   console.log("[auth] Check store for valid session data...")

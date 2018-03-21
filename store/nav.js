@@ -1,21 +1,20 @@
 export const state = () => ({
 
+  // Set by auth middleware to route.path so can redirect user after auth
+  authRedirect: "/",
+
   mainMenu: [
     {
       name: "activities",
-      to: "/activities/home/overview",
+      to: "/activities",
     },
     {
       name: "resources",
-      to: "/resources/library/search",
+      to: "/resources",
     },
     {
       name: "setup",
       to: "/setup/home",
-    },
-    {
-      name: "tools",
-      to: "/tools",
     },
     {
       name: "help",
@@ -61,6 +60,10 @@ export const state = () => ({
         {name: "latest", to: "/resources/library/latest"},
       ],
     },
+    {
+      name: "tools",
+      to: "/resources/tools",
+    },
   ],
 
   setup: [
@@ -80,7 +83,18 @@ export const state = () => ({
       iconClass: "",
     },
   ]
-
-
-
 })
+
+export const mutations = {
+
+  setAuthRedirect(state, path) {
+    state.authRedirect = path
+  }
+}
+
+export const actions = {
+
+  redirectAfterAuth({commit}, path) {
+    commit("setAuthRedirect", path)
+  }
+}

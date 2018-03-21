@@ -20,7 +20,6 @@
           <nuxt-link class="navbar-item" v-for="l,i in $store.state.nav.mainMenu"
                      :key="i"
                      :to="l.to"
-                     activeClass="is-active"
           >{{ l.name }}
           </nuxt-link>
           <div class="navbar-item heartbeat" @click="$router.push('/auth')">
@@ -53,7 +52,7 @@
         console.log(this.menuActive)
         this.menuActive = !this.menuActive
         console.log(this.menuActive)
-      }
+      },
     }
 
   }

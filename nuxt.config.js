@@ -56,6 +56,11 @@ module.exports = {
     '@nuxtjs/font-awesome',
   ],
 
+  router: {
+    linkActiveClass: "is-active",
+    linkExactActiveClass: "is-active",
+  },
+
   /*
   ** Axios module configuration
   */
