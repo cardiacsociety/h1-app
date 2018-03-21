@@ -1,5 +1,6 @@
 <template>
   <div>
+
     <h4 class="title is-4">HAS-BLED Score for Major Bleeding Risk</h4>
     <p class="subtitle is-6">Estimates risk of major bleeding for patients on anticoagulation
       to assess risk-benefit in atrial fibrillation care.</p>
@@ -91,12 +92,9 @@
 
     <hr>
 
-    <hr>
-
-
-    <div :class="{'notification' : true, 'is-success': score < 3, 'is-warning': score >= 3, 'is-danger': score > 5}">
-      <p>Score: {{ score }}</p>
-      <p>{{ risk }}</p>
+    <div :class="{'notification' : true, 'is-success': score < 2, 'is-warning': score == 2, 'is-danger': score > 2}">
+      <h3 class="title is-3">Score: {{ score }}</h3>
+      <p class="subtitle is-5">{{ risk }}</p>
       <p>{{ recommendation }}</p>
     </div>
 
