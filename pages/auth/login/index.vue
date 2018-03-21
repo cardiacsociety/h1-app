@@ -61,7 +61,7 @@
           .then((res) => {
             this.$store.dispatch("session/start", res.data.token)
               .then(() => {
-                this.$router.push("/home")
+                this.$router.push(this.$store.state.nav.authRedirect)
               })
               .catch((err) => {
                 this.error = "could not start session"
