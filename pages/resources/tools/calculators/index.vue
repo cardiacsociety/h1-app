@@ -9,7 +9,9 @@
 
       <div>
         <CalculatorModal>
-          <template slot="open"><a>Australian Absolute Cardiovascular Risk</a></template>
+          <template slot="open">
+            <button class="button">Australian Absolute Cardiovascular Risk</button>
+          </template>
           <template slot="calculator">
             <AACR/>
           </template>
@@ -18,7 +20,9 @@
 
       <div>
         <CalculatorModal>
-          <template slot="open"><a>CHA₂DS₂-VASc Score</a></template>
+          <template slot="open">
+            <button class="button">CHA₂DS₂-VASc Score</button>
+          </template>
           <template slot="calculator">
             <CHA2DS2_VASc/>
           </template>
@@ -27,7 +31,9 @@
 
       <div>
         <CalculatorModal>
-          <template slot="open"><a>Creatinine Clearance</a></template>
+          <template slot="open">
+            <button class="button">Creatinine Clearance</button>
+          </template>
           <template slot="calculator">
             <Creatinine_Clearance/>
           </template>
@@ -36,7 +42,9 @@
 
       <div>
         <CalculatorModal>
-          <template slot="open"><a>Dutch Lipid Clinical Network Score</a></template>
+          <template slot="open">
+            <button class="button">Dutch Lipid Clinical Network Score</button>
+          </template>
           <template slot="calculator">
             <Dutch_Lipid/>
           </template>
@@ -45,7 +53,9 @@
 
       <div>
         <CalculatorModal>
-          <template slot="open"><a>HAS-BLED Score for Major Bleeding Risk</a></template>
+          <template slot="open">
+            <button class="button">HAS-BLED Score</button>
+          </template>
           <template slot="calculator">
             <HAS_BLED/>
           </template>
