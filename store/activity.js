@@ -3,11 +3,22 @@ import Config from '~/config'
 const graphqlUrl = Config.GRAPHQL_API_BASE_URL
 
 export const state = () => ({
+
+  // currentEvaluation is an object that represents a summary report of the current activity evaluation period
+  currentEvaluation: {},
+
+  // activityTypes is a list of the types of activity available for selection
   activityTypes: [],
+
+  // memberActivities is a list of all of the activities recorded by the member
   memberActivities: [],
 })
 
 export const mutations = {
+
+  setCurrentEvaluation(state, evaluation) {
+    state.currentEvaluation = evaluation
+  },
 
   setActivityTypes(state, types) {
     state.activityTypes = types
@@ -19,6 +30,38 @@ export const mutations = {
 }
 
 export const actions = {
+
+  fetchCurrentEvaluation({commit}, token) {
+
+    const variables = {token: token}
+
+    const query = `query MemberUser($token: String!) {
+                     member(token: $token) {
+                       evaluation {
+                         name
+                         startDate
+                         endDate
+                         creditObtained
+                         creditRequired
+                       }
+                     }
+                   }`
+    let r = {
+      url: graphqlUrl,
+      method: "post",
+      headers: {'Content-Type': 'application/json'},
+      data: JSON.stringify({query, variables}),
+    }
+
+    this.$axios(r)
+      .then(res => {
+        commit("setCurrentEvaluation", res.data.data.member.evaluation)
+      })
+      .catch(err => {
+        console.log(err)
+      })
+
+  },
 
   fetchActivityTypes({commit}) {
 
@@ -48,7 +91,6 @@ export const actions = {
 
     this.$axios(r)
       .then(res => {
-        console.log(res)
         // todo - prob only need to repeat this if the values are absent as they rarely change
         // axios returns a 'data' object, and the GraphQL server does too - that's why :)
         commit("setActivityTypes", res.data.data.activities)
@@ -89,7 +131,7 @@ export const actions = {
 
     this.$axios(r)
       .then(res => {
-        console.log(res)
+        //console.log(res)
         commit("setMemberActivities", res.data.data.member.activities)
       })
       .catch(err => {
@@ -98,10 +140,6 @@ export const actions = {
   },
 
   saveMemberActivity(ctx, {token, memberActivity}) {
-
-    console.log("saveMemberActivity() in store...")
-    console.log("token", token)
-    console.log("memberActivity", memberActivity)
 
     const variables = {token: token}
 
@@ -123,6 +161,13 @@ export const actions = {
                    }
                  }`
 
+    // replace newlines with a space - newlines in template literal will break the GraphQl query string
+    // todo this should be a global function
+    query = query.replace(/(\r\n\t|\n|\r\t)/gm," ")
+    // .. and extra white spaces
+    query = query.replace(/\s\s+/g, ' ')
+
+
     let r = {
       url: graphqlUrl,
       method: "post",
@@ -130,26 +175,26 @@ export const actions = {
       data: JSON.stringify({query, variables}),
     }
 
-    this.$axios(r)
-      .then((res) => {
-        console.log("Member activity saved")
-        console.log(res)
-        // This is a bit inefficient but will do for now
-        // console.log("Resetting the store...")
-        // ctx.dispatch("fetchMemberActivities", token)
-        //   .then((r2) => {
-        //     console.log('Appeared to be successful')
-        //     console.log(r2)
-        //   })
-        //   .catch((e2) => {
-        //     console.log('An error occured')
-        //     console.log(e2)
-        //   })
-        //commit("setMemberActivities", res.data.data.member.activities)
-      })
-      .catch((err) => {
-        console.log(err)
-      })
+    return this.$axios(r)
+      // .then((res) => {
+      //   console.log("Member activity saved")
+      //   console.log(res)
+      //   // This is a bit inefficient but will do for now
+      //   // console.log("Resetting the store...")
+      //   // ctx.dispatch("fetchMemberActivities", token)
+      //   //   .then((r2) => {
+      //   //     console.log('Appeared to be successful')
+      //   //     console.log(r2)
+      //   //   })
+      //   //   .catch((e2) => {
+      //   //     console.log('An error occured')
+      //   //     console.log(e2)
+      //   //   })
+      //   //commit("setMemberActivities", res.data.data.member.activities)
+      // })
+      // .catch((err) => {
+      //   console.log(err)
+      // })
   }
 }
 

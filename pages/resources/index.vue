@@ -2,8 +2,8 @@
 </template>
 <script>
   export default {
-    beforeMount() {
-      this.$router.push("/resources/library/search")
+    beforeCreate() {
+      this.$router.push(this.$route.path + "/library")
     }
   }
 </script>

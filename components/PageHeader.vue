@@ -15,6 +15,7 @@
             <ul>
               <template v-for="item,index in subnav">
                 <nuxt-link
+                  class="is-capitalized"
                   :to="item.to"
                   active-class="is-active"
                   tag="li"
@@ -48,7 +49,7 @@
           <template v-for="item,index in subSubNav">
             <nuxt-link
               :to="item.to"
-              class="navbar-item is-tab"
+              class="navbar-item is-tab is-capitalized"
               active-class="is-active"
             >
               <template v-if="!item.name && item.iconClass">

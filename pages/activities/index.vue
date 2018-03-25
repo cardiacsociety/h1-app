@@ -3,8 +3,8 @@
 </template>
 <script>
   export default {
-    created() {
-      this.$router.push('/activities/home')
+    beforeCreate() {
+      this.$router.push(this.$route.path+'/home')
     },
   }
 </script>

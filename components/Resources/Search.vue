@@ -23,16 +23,16 @@
             <h5 class="title is-5 is-marginless">
               <ais-highlight :result="result" attribute-name="name"></ais-highlight>
             </h5>
-            <ActivityModal
-              :activityTypesData="activityTypes"
-              :activityData="{description: result.name + '\r\n' + result.shortUrl}"
+
+            <ActivityResourceModal
+              :activityData="activityData(result)"
             >
               <template slot="open">
                 <p class="subtitle is-6 is-italic has-text-grey-light">
                   <a @click="openResource(result.shortUrl)">{{ resourceLinkText(result) }}</a>
                 </p>
               </template>
-            </ActivityModal>
+            </ActivityResourceModal>
 
             <ais-snippet :result="result" attribute-name="description"></ais-snippet>
 
@@ -49,12 +49,12 @@
 <script>
   import Config from '~/config'
   import ScrollMonitor from 'scrollmonitor'
-  import ActivityModal from '~/components/Activity/ActivityModal.vue'
+  import ActivityResourceModal from '~/components/Activity/ActivityResourceModal'
 
   export default {
 
     components: {
-      ActivityModal,
+      ActivityResourceModal,
     },
 
 
@@ -62,6 +62,8 @@
       return {
         Config,
         page: 1,
+        // solo reading is the most likely :)
+        defaultActivityTypeId: 32,
       }
     },
 
@@ -77,11 +79,11 @@
       // create link test for a search result
       resourceLinkText(result) {
 
-        let t = (result.sourceNameAbbrev ? result.sourceNameAbbrev : '') +
+        let t = (result.sourceNameAbbrev ? result.sourceNameAbbrev +'. ' : '') +
           (result.sourcePubDate ? result.sourcePubDate : '') +
-          (result.sourceVolume ? '; ' + result.sourceVolume : '') +
+          (result.sourceVolume ? ';' + result.sourceVolume : '') +
           (result.sourceIssue ? '(' + result.sourceIssue + ')' : '') +
-          (result.sourcePages ? ': ' + result.sourcePages : '')
+          (result.sourcePages ? ':' + result.sourcePages : '')
 
         if (t) {
           return t
@@ -89,6 +91,15 @@
 
         // resort to the short link url
         return result.shortUrl
+      },
+
+      // create at least some of the activityData object to pass through to the activity form
+      // 'result' is the search result object for a particular resource
+      activityData(result) {
+        return {
+          description: result.name + "\\r\\n[" + this.resourceLinkText(result) + "]",
+          typeId: this.defaultActivityTypeId,
+        }
       },
 
       openResource(url) {
@@ -112,20 +123,7 @@
 </script>
 
 <style scoped>
-  .search-input {
-    margin-bottom: 20px;
-    padding-left: 4px;
-    border: solid #ccc 1px;
-    border-radius: 5px;
-    font-size: 20px;
-  }
-
   .highlight-terms em {
     font-style: normal;
-  }
-
-  .resource-link {
-    text-transform: lowercase;
-    margin-left: 0px;
   }
 </style>

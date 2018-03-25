@@ -6,14 +6,41 @@
       :subnav="$store.state.nav.activities"
     />
     <PageSection>
-      <p>This pages will show an on-creen overview of activity to-date and requirements.</p>
+
+      <div v-if="progressPercentage">
+        <progress class="progress is-large is-success"
+                  :value="evaluation.creditObtained"
+                  :max="evaluation.creditRequired">
+          {{ progressPercentage | round0 }}%
+        </progress>
+        <p>CPD activity is <span class="has-text-weight-semibold">{{ progressPercentage | round0 }}%</span> complete
+          for the period ending {{ evaluation.endDate | formatDate }}.</p>
+      </div>
+      <div v-else>
+        <p>CPD activity report not available at this time.</p>
+      </div>
+
     </PageSection>
   </div>
 </template>
 
 <script>
     export default {
-        name: "index"
+
+      computed: {
+
+        evaluation() {
+          return this.$store.state.activity.currentEvaluation
+        },
+
+        progressPercentage() {
+          return (this.evaluation.creditObtained / this.evaluation.creditRequired * 100) | 0
+        },
+      },
+
+      beforeMount() {
+        this.$store.dispatch("activity/fetchCurrentEvaluation", this.$store.state.session.token.jwt)
+      }
     }
 </script>
 

@@ -17,7 +17,7 @@
 
         </div>
         <div class="navbar-end">
-          <nuxt-link class="navbar-item" v-for="l,i in $store.state.nav.mainMenu"
+          <nuxt-link class="navbar-item is-capitalized" v-for="l,i in $store.state.nav.mainMenu"
                      :key="i"
                      :to="l.to"
           >{{ l.name }}

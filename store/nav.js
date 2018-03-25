@@ -32,20 +32,24 @@ export const state = () => ({
           name: "overview",
           to: "/activities/home/overview",
         },
-        {
-          name: "new",
-          to: "/activities/home/new"
-        },
       ],
     },
     {
-      name: "test",
-      to: "/activities/test",
-      iconClass: "fa fa-image",
+      name: "record",
+      to: "/activities/record",
+      iconClass: "fa fa-edit",
       subsubnav: [
-        {name: "one", to: "/activities/test/one"},
-        {name: "two", to: "/activities/test/two"},
-        {name: "three", to: "/activities/test/three"},
+        {name: "new", to: "/activities/record/new"},
+        {name: "recurring", to: "/activities/record/recurring"},
+      ],
+    },
+    {
+      name: "history",
+      to: "/activities/history",
+      iconClass: "fa fa-history",
+      subsubnav: [
+        {name: "all", to: "/activities/history/all"},
+        {name: "report", to: "/activities/history/report"},
       ],
     },
   ],
@@ -57,7 +61,6 @@ export const state = () => ({
       iconClass: "",
       subsubnav: [
         {name: "search", to: "/resources/library/search"},
-        {name: "latest", to: "/resources/library/latest"},
       ],
     },
     {

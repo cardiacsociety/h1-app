@@ -37,6 +37,7 @@ module.exports = {
   plugins: [
     '~plugins/global-components',
     '~plugins/number-filters',
+    '~plugins/date-filters',
     '~plugins/instantsearch',
     '~plugins/vee-validate',
 

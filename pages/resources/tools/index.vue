@@ -2,8 +2,8 @@
 </template>
 <script>
   export default {
-    beforeMount() {
-      this.$router.push("/resources/tools/calculators")
+    beforeCreate() {
+      this.$router.push(this.$route.path + "/calculators")
     }
   }
 </script>

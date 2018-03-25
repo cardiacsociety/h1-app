@@ -1,10 +1,10 @@
 <template>
-
 </template>
+
 <script>
   export default {
     beforeCreate() {
-      this.$router.push('/activities/test/one')
+      this.$router.push(this.$route.path+'/all')
     },
   }
 </script>
