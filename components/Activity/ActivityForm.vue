@@ -38,7 +38,7 @@
 
       <div class="field">
         <label class="label">Activity</label>
-        <div class="control">
+        <div class="control" v-if="activityData.typeId">
           <div :class="{'select': true, 'is-danger': errors.has('typeId')}">
             <select name="typeId"
                     v-model="form.typeId"
@@ -56,6 +56,12 @@
               {{ errors.first('typeId') }}
             </span>&nbsp;
           </div>
+        </div>
+        <div v-else>
+          <p>
+            This activity record does not appear to have a 'type'. If this is an older record the activity /
+            type cannot be edited. If you do need to edit this record you can copy it or delete it, and create a new one.
+          </p>
         </div>
       </div>
 
@@ -102,12 +108,6 @@
 
   export default {
     props: {
-
-      // the index of the item is the form is opened from a list
-      // use to update the list display when the form is submitted
-      index: {
-        type: Number,
-      },
 
       // Option to pass in an activity object to pre-populate
       activityData: {

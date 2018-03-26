@@ -2,7 +2,9 @@
   <div>
     <!--click wrapper as cannot listen for click on a slot-->
     <span @click="openModal">
+
       <slot name="open">open</slot>
+
     </span>
     <div class="modal" :class="{'is-active': open}">
       <div class="modal-background"></div>

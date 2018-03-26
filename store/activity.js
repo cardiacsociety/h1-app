@@ -107,7 +107,7 @@ export const actions = {
     let query = `query ($token: String!) {
                    member(token: $token) {
                      id 
-                     activities {
+                     activities(last: 500) {
                        id
                        date
                        description
