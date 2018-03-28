@@ -9,10 +9,9 @@
     <div class="modal" :class="{'is-active': open}">
       <div class="modal-background"></div>
       <div class="modal-content">
-
+        <h4 class="title is-4">CPD Activity</h4>
         <div class="notification">
           <button class="delete" @click="closeModal"></button>
-          <h4 class="title is-4">CPD Activity</h4>
           <ActivityForm :activityData="activityData"/>
         </div>
 

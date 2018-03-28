@@ -70,6 +70,13 @@ export const state = () => ({
         {name: "calculators", to: "/resources/tools/calculators"},
       ],
     },
+    {
+      name: "directory",
+      to: "/resources/directory",
+      subsubnav: [
+        {name: "search", to: "/resources/directory/search"},
+      ],
+    },
   ],
 
   setup: [
