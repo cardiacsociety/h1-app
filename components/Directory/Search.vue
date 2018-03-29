@@ -27,11 +27,11 @@
       </div>
         <ais-results :stack="true">
           <template slot-scope="{ result }">
-            <div class="box search-result" v-if="result.membership[0] != 'CSANZ Non-member' && searchString">
+            <div class="box search-result" v-if="searchString">
               <h5 class="title is-5 is-marginless">
                 <ais-highlight :result="result" attribute-name="name"/>
               </h5>
-              <p class="subtitle is-7 is-marginless" v-html="result._highlightResult.membership[0].value"></p>
+              <p class="subtitle is-7 is-marginless" v-html="result._highlightResult.membership.value"></p>
               <div v-html="result._highlightResult.location.value"></div>
               <div v-if="checkEmail(result.email)"><a :href="'mailto:'+result.email">{{ result.email }}</a></div>
               <div v-if="result.mobile"><a :href="'tel://'+result.mobile">{{ result.mobile }}</a></div>

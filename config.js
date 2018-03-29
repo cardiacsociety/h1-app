@@ -12,7 +12,7 @@ if (process.env.NODE_ENV === 'production') {
 config.ALGOLIA_APP_ID = "MZQPVRPXFY"
 config.ALGOLIA_API_KEY = "b2870abe304ad95866629a6713fd6e91"
 config.ALGOLIA_RESOURCES_INDEX = "RESOURCES"
-config.ALGOLIA_MEMBERS_INDEX = "MEMBERS"
+config.ALGOLIA_MEMBERS_INDEX = "DIRECTORY"
 
 // Endpoints
 config.API_URL_AUTH = config.REST_API_BASE_URL + "/auth/member"
