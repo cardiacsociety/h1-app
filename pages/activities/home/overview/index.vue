@@ -13,8 +13,8 @@
                   :max="evaluation.creditRequired">
           {{ progressPercentage | round0 }}%
         </progress>
-        <p>CPD activity is <span class="has-text-weight-semibold">{{ progressPercentage | round0 }}%</span> complete
-          for the period ending {{ evaluation.endDate | formatDate }}.</p>
+        <p>{{ evaluation.name }} <span class="has-text-weight-semibold">{{ progressPercentage | round0 }}%</span> complete
+          for the period {{ evaluation.startDate | formatDate }} - {{ evaluation.endDate | formatDate }}.</p>
       </div>
       <div v-else>
         <p>CPD activity report not available at this time.</p>
@@ -34,7 +34,11 @@
         },
 
         progressPercentage() {
-          return (this.evaluation.creditObtained / this.evaluation.creditRequired * 100) | 0
+          let p = this.evaluation.creditObtained / this.evaluation.creditRequired * 100
+          if (p > 100) {
+            p = 100
+          }
+          return p
         },
       },
 

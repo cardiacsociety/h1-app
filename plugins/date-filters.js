@@ -16,7 +16,9 @@ const months = [
 ]
 
 const dateFilter = value => {
+
   return formatDate(value)
+
 }
 
 function formatDate(inputDate) {
@@ -28,4 +30,11 @@ function formatDate(inputDate) {
   return `${date} ${months[month]} ${year}`
 }
 
-Vue.filter('formatDate', dateFilter)
+
+const niceDateFilter = value => {
+  const d = new Date(value)
+  const options = {year: 'numeric', month: 'short', day: '2-digit', formatMatcher: 'best fit'}
+  return d.toLocaleDateString('en-GB', options)
+}
+
+Vue.filter('formatDate', niceDateFilter)

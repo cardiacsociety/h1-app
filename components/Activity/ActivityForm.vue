@@ -232,6 +232,7 @@
       saveActivity() {
         this.$store.dispatch("activity/saveMemberActivity", {token: this.token, memberActivity: this.form})
           .then(res => {
+            this.$root.$emit("activityUpdate") // so pages can listen for this event
             this.message.visible = true
             this.message.class = "is-success"
             this.message.text = "Record saved"

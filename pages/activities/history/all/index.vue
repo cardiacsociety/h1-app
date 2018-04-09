@@ -101,6 +101,14 @@
     beforeMount() {
       this.$store.dispatch("activity/fetchMemberActivities", this.token)
     },
+
+    mounted() {
+      // listen for updates to an activity, and rebuild the list if so
+      // todo ... this should just update the relevant record instead of rebuilding the entire list
+      this.$root.$on("activityUpdate", () => {
+        this.$store.dispatch("activity/fetchMemberActivities", this.token)
+      })
+    }
   }
 </script>
 
