@@ -115,6 +115,10 @@
       this.$root.$on("activityUpdate", () => {
         this.$store.dispatch("activity/fetchMemberActivities", this.token)
       })
+      this.$root.$on("activityDelete", () => {
+        this.$store.dispatch("activity/fetchMemberActivities", this.token)
+        this.currentEditIndex = null
+      })
     }
   }
 </script>

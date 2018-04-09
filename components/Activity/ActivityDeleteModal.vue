@@ -22,7 +22,7 @@
             <br>
             This action <strong>cannot be reversed</strong><br>
             <br>
-            <button class="button is-danger">delete</button>&nbsp;
+            <button class="button is-danger" @click="deleteMemberActivity(activityData.id)">delete</button>&nbsp;
             <button class="button" @click="closeModal">cancel</button>
           </div>
         </div>
@@ -66,6 +66,12 @@
       }
     },
 
+    computed: {
+      token() {
+        return this.$store.state.session.token.jwt
+      },
+    },
+
     methods: {
 
       openModal() {
@@ -76,41 +82,23 @@
         this.open = false
       },
 
+      deleteMemberActivity(id) {
+        this.$store.dispatch("activity/deleteMemberActivity", {token: this.token, id: id})
+          .then(() => {
+            this.$root.$emit("activityDelete")
+            this.closeModal()
+          })
+          .catch((err) => {
+            console.log(err)
+          })
+      }
     },
 
-
     mounted() {
-
-      // activityData object can be used to initialise the local activity object
-      if (this.activityData) {
-
-        // id of member activity record (editing an existing record)
-        if (this.activityData.id) {
-          this.activity.id = this.activityData.id
-        }
-
-        // quantity (generally hours)
-        if (this.activityData.quantity) {
-          // initialise the computed value, watcher will set activity.quantity
-          this.quantity = this.activityData.quantity
-        }
-
-        // id of activity TYPE
-        if (this.activityData.typeId) {
-          this.activity.typeId = this.activityData.typeId
-        }
-
-        // Description / details
-        if (this.activityData.description) {
-          this.activity.description = this.activityData.description
-        }
-      }
-
       // listen for a 'close' event
       this.$root.$on('close', () => {
         this.closeModal()
       })
-
     },
   }
 </script>

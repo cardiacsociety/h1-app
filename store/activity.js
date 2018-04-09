@@ -131,7 +131,6 @@ export const actions = {
 
     this.$axios(r)
       .then(res => {
-        //console.log(res)
         commit("setMemberActivities", res.data.data.member.activities)
       })
       .catch(err => {
@@ -147,7 +146,7 @@ export const actions = {
     // not passed in, or is falsey
     let query = `mutation Member($token: String!) {
                    member(token: $token) {
-                     setActivity(obj: {` +
+                     saveActivity(obj: {` +
                       (memberActivity.id ? `id: ${memberActivity.id}` : ``) +
                       `date: "${memberActivity.date}"
                       description: "${memberActivity.description}"
@@ -176,26 +175,28 @@ export const actions = {
     }
 
     return this.$axios(r)
-      // .then((res) => {
-      //   console.log("Member activity saved")
-      //   console.log(res)
-      //   // This is a bit inefficient but will do for now
-      //   // console.log("Resetting the store...")
-      //   // ctx.dispatch("fetchMemberActivities", token)
-      //   //   .then((r2) => {
-      //   //     console.log('Appeared to be successful')
-      //   //     console.log(r2)
-      //   //   })
-      //   //   .catch((e2) => {
-      //   //     console.log('An error occured')
-      //   //     console.log(e2)
-      //   //   })
-      //   //commit("setMemberActivities", res.data.data.member.activities)
-      // })
-      // .catch((err) => {
-      //   console.log(err)
-      // })
+  },
+
+  deleteMemberActivity(ctx, {token, id}) {
+
+    const variables = {token: token, id: id}
+
+    let query = `mutation Member($token: String!, $id: Int) {
+                   member(token: $token) {
+                     deleteActivity(id: $id)
+                   }
+                 }`
+
+    let r = {
+      url: graphqlUrl,
+      method: "post",
+      headers: {'Content-Type': 'application/json'},
+      data: JSON.stringify({query, variables}),
+    }
+
+    return this.$axios(r)
   }
+
 }
 
 export const getters = {
