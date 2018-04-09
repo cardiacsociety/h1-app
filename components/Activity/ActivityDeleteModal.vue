@@ -10,19 +10,25 @@
       <div class="modal-background"></div>
       <div class="modal-content">
 
-        <div class="message is-warning">
+        <div class="message is-danger">
           <div class="message-header">
-            Edit CPD Activity - ID {{ activityData.id }}
+            Delete Activity
             <button class="delete" @click="closeModal"></button>
           </div>
           <div class="message-body">
-            <ActivityForm :activityData="activityData"/>
+            You are about to delete the following activity: <br>
+            <strong>{{ activityData.date }} - {{ activityData.activity }}</strong> ({{ activityData.type }}):
+            <i>{{ activityData.description }}</i><br>
+            <br>
+            This action <strong>cannot be reversed</strong><br>
+            <br>
+            <button class="button is-danger">delete</button>&nbsp;
+            <button class="button" @click="closeModal">cancel</button>
           </div>
         </div>
-
       </div>
-      <button class="modal-close is-large" aria-label="close" @click="closeModal"></button>
     </div>
+    <button class="modal-close is-large" aria-label="close" @click="closeModal"></button>
   </div>
 </template>
 
