@@ -9,14 +9,14 @@
       <h4 class="title is-4">All Activities</h4>
       <p class="subtitle is-6">Click a record for actions.</p>
 
-      <template v-for="a,i in memberActivities">
+      <template v-for="a in memberActivities">
 
-        <div class="notification activity-row" :key="i" @click="currentEditIndex = i" v-if="currentEditIndex != i">
+        <div class="notification activity-row" :key="a.id" @click="currentEditIndex = a.id" v-if="currentEditIndex != a.id">
           <span class="is-size-7">{{ a.date }}: {{ a.activity }} - {{ a.type }}</span><br>
           {{ a.description }}
         </div>
 
-        <div :key="i" v-if="currentEditIndex === i">
+        <div :key="a.id" v-if="currentEditIndex === a.id">
           <div class="message is-info activity-row-focused">
             <div class="message-header">
               Date: {{ a.date | formatDate }} - Credit: {{ a.credit }}
@@ -46,7 +46,11 @@
                     </HelpModal>
                   </div>
                   <div class="level-item">
-                    <button class="button is-small is-success"><i class="fa fa-copy"></i>&nbsp;copy</button>&nbsp;
+                    <ActivityCopyModal :activityData="a">
+                      <template slot="open">
+                        <button class="button is-small is-success"><i class="fa fa-copy"></i>&nbsp;copy</button>&nbsp;
+                      </template>
+                    </ActivityCopyModal>
                   </div>
                   <div class="level-item">
                     <ActivityDeleteModal :activityData="a">
@@ -70,6 +74,7 @@
 
 <script>
 
+  import ActivityCopyModal from '~/components/Activity/ActivityCopyModal'
   import ActivityEditModal from '~/components/Activity/ActivityEditModal'
   import ActivityDeleteModal from '~/components/Activity/ActivityDeleteModal'
   import HelpModal from '~/components/Help/HelpModal'
@@ -77,6 +82,7 @@
   export default {
 
     components: {
+      ActivityCopyModal,
       ActivityEditModal,
       ActivityDeleteModal,
       HelpModal,
@@ -100,9 +106,10 @@
     },
 
     methods: {
+
       openModal() {
         alert("edit this")
-      }
+      },
     },
 
     beforeMount() {

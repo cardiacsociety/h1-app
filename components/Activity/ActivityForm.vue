@@ -38,7 +38,7 @@
 
       <div class="field">
         <label class="label">Activity</label>
-        <div class="control" v-if="activityData.typeId">
+        <div class="control" v-if="isNewOrHasTypeId">
           <div :class="{'select': true, 'is-danger': errors.has('typeId')}">
             <select name="typeId"
                     v-model="form.typeId"
@@ -166,7 +166,7 @@
 
       // add or edit flag
       saveMode() {
-        if (this.activityData && this.activityData.id) {
+        if (this.activityData && this.activityData.id && this.activityData.typeId) {
           return "update"
         }
         return "add"
@@ -215,6 +215,15 @@
       // setActivityId() {
       //   this.form.activityId = this.selectedActivityId
       // },
+
+      isNewOrHasTypeId() {
+        if (!this.activityData) {
+          return true
+        } else if (this.activityData.id && this.activityData.typeId) {
+          return true
+        }
+        return false
+      },
 
       validateForm() {
         let v = false

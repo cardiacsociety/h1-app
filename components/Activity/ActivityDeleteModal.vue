@@ -50,19 +50,9 @@
 
     data() {
       return {
-
         open: false,
         errorAlert: false,
         errorMessage: null,
-
-        // Form data elements
-        activity: {
-          id: null,
-          typeId: null,
-          date: null,
-          quantity: 0,
-          description: "",
-        },
       }
     },
 
@@ -73,7 +63,6 @@
     },
 
     methods: {
-
       openModal() {
         this.open = true
       },

@@ -7,45 +7,53 @@
     />
     <PageSection>
 
-      <div v-if="progressPercentage">
-        <progress class="progress is-large is-success"
-                  :value="evaluation.creditObtained"
-                  :max="evaluation.creditRequired">
-          {{ progressPercentage | round0 }}%
-        </progress>
-        <p>{{ evaluation.name }} <span class="has-text-weight-semibold">{{ progressPercentage | round0 }}%</span> complete
-          for the period {{ evaluation.startDate | formatDate }} - {{ evaluation.endDate | formatDate }}.</p>
-      </div>
-      <div v-else>
-        <p>CPD activity report not available at this time.</p>
-      </div>
+        <ActivityProgressBar/>
+
+        <p>&nbsp;</p>
+
+        <div>
+          <ActivityAddModal>
+            <template slot="open">
+              <button class="button is-success"><i class="fa fa-add"></i>&nbsp;add new</button>&nbsp;
+            </template>
+          </ActivityAddModal>
+        </div>
 
     </PageSection>
   </div>
 </template>
 
 <script>
-    export default {
 
-      computed: {
+  import ActivityProgressBar from '~/components/Activity/ActivityProgressBar'
+  import ActivityAddModal from '~/components/Activity/ActivityAddModal'
 
-        evaluation() {
-          return this.$store.state.activity.currentEvaluation
-        },
+  export default {
 
-        progressPercentage() {
-          let p = this.evaluation.creditObtained / this.evaluation.creditRequired * 100
-          if (p > 100) {
-            p = 100
-          }
-          return p
-        },
-      },
+    components: {
+      ActivityProgressBar,
+      ActivityAddModal,
+    },
 
-      beforeMount() {
-        this.$store.dispatch("activity/fetchCurrentEvaluation", this.$store.state.session.token.jwt)
-      }
-    }
+    // computed: {
+    //
+    //   evaluation() {
+    //     return this.$store.state.activity.currentEvaluation
+    //   },
+    //
+    //   progressPercentage() {
+    //     let p = this.evaluation.creditObtained / this.evaluation.creditRequired * 100
+    //     if (p > 100) {
+    //       p = 100
+    //     }
+    //     return p
+    //   },
+    // },
+    //
+    // beforeMount() {
+    //   this.$store.dispatch("activity/fetchCurrentEvaluation", this.$store.state.session.token.jwt)
+    // }
+  }
 </script>
 
 <style scoped>

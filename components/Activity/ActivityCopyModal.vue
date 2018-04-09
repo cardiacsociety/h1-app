@@ -10,13 +10,13 @@
       <div class="modal-background"></div>
       <div class="modal-content">
 
-        <div class="message is-warning">
+        <div class="message is-success">
           <div class="message-header">
-            Edit CPD Activity - ID {{ activityData.id }}
+            Copy CPD Activity - ID {{ activityData.id }}
             <button class="delete" @click="closeModal"></button>
           </div>
           <div class="message-body">
-            <ActivityForm :activityData="activityData"/>
+            <ActivityForm :activityData="activityWithoutID"/>
           </div>
         </div>
 
@@ -29,7 +29,6 @@
   import ActivityForm from "~/components/Activity/ActivityForm"
 
   export default {
-
     props: {
       // Option to pre-populate activity form
       activityData: {
@@ -49,8 +48,13 @@
       }
     },
 
-    methods: {
+    computed: {
+      activityWithoutID() {
+        return this.unsetID(this.activityData)
+      }
+    },
 
+    methods: {
       openModal() {
         this.open = true
       },
@@ -58,6 +62,13 @@
       closeModal() {
         this.open = false
       },
+
+      unsetID(activity) {
+        let a = Object.assign({}, activity)
+        a.id = null
+        return a
+      }
+
     },
 
     mounted() {
@@ -65,7 +76,6 @@
       this.$root.$on('close', () => {
         this.closeModal()
       })
-
     },
   }
 </script>

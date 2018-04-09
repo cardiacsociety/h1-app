@@ -10,13 +10,13 @@
       <div class="modal-background"></div>
       <div class="modal-content">
 
-        <div class="message is-warning">
+        <div class="message is-success">
           <div class="message-header">
-            Edit CPD Activity - ID {{ activityData.id }}
+            Add CPD Activity
             <button class="delete" @click="closeModal"></button>
           </div>
           <div class="message-body">
-            <ActivityForm :activityData="activityData"/>
+            <ActivityForm/>
           </div>
         </div>
 
@@ -58,6 +58,7 @@
       closeModal() {
         this.open = false
       },
+
     },
 
     mounted() {
@@ -65,7 +66,6 @@
       this.$root.$on('close', () => {
         this.closeModal()
       })
-
     },
   }
 </script>

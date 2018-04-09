@@ -6,18 +6,20 @@
       :subnav="$store.state.nav.activities"
     />
     <PageSection>
-      <h1>Activities Test Form</h1>
 
-      <a @click="setMemberActivityRecord(291)">291</a>&nbsp;
-      <a @click="setMemberActivityRecord(292)">292</a>
-
-      <p>
-        <ActivityForm :activityData="activityData" />
-      </p>
-
-      <div>
-        local activityRecord: {{ activityRecord }}
+      <div class="columns">
+        <div class="column is-6">
+          <div class="message is-success">
+            <div class="message-header">
+              New Activity
+            </div>
+            <div class="message-body">
+              <ActivityForm/>
+            </div>
+          </div>
+        </div>
       </div>
+
     </PageSection>
   </div>
 
