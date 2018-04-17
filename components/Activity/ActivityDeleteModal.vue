@@ -56,12 +56,6 @@
       }
     },
 
-    computed: {
-      token() {
-        return this.$store.state.session.token.jwt
-      },
-    },
-
     methods: {
       openModal() {
         this.open = true
@@ -72,7 +66,7 @@
       },
 
       deleteMemberActivity(id) {
-        this.$store.dispatch("activity/deleteMemberActivity", {token: this.token, id: id})
+        this.$store.dispatch("activity/deleteMemberActivity", id)
           .then(() => {
             this.$root.$emit("activityDelete")
             this.closeModal()

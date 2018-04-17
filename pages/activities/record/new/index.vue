@@ -47,13 +47,6 @@
       }
     },
 
-    computed: {
-
-      token() {
-        return this.$store.state.session.token.jwt
-      },
-    },
-
     methods: {
 
       setMemberActivityRecord(id) {
@@ -70,7 +63,7 @@
     },
 
     beforeMount() {
-      this.$store.dispatch("activity/fetchMemberActivities", this.token)
+      this.$store.dispatch("activity/fetchMemberActivities")
     },
 
 

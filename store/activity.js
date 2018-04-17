@@ -1,6 +1,7 @@
 import Config from '~/config'
 
 const graphqlUrl = Config.GRAPHQL_API_BASE_URL
+const restUrl = Config.REST_API_BASE_URL
 
 export const state = () => ({
 
@@ -31,9 +32,9 @@ export const mutations = {
 
 export const actions = {
 
-  fetchCurrentEvaluation({commit}, token) {
+  fetchCurrentEvaluation(ctx) {
 
-    const variables = {token: token}
+    const variables = {token: ctx.rootState.session.token.jwt}
 
     const query = `query MemberUser($token: String!) {
                      member(token: $token) {
@@ -55,7 +56,7 @@ export const actions = {
 
     this.$axios(r)
       .then(res => {
-        commit("setCurrentEvaluation", res.data.data.member.evaluation)
+        ctx.commit("setCurrentEvaluation", res.data.data.member.evaluation)
       })
       .catch(err => {
         console.log(err)
@@ -63,7 +64,7 @@ export const actions = {
 
   },
 
-  fetchActivityTypes({commit}) {
+  fetchActivityTypes(ctx) {
 
     let query = `query Activities {
               activities {
@@ -93,16 +94,16 @@ export const actions = {
       .then(res => {
         // todo - prob only need to repeat this if the values are absent as they rarely change
         // axios returns a 'data' object, and the GraphQL server does too - that's why :)
-        commit("setActivityTypes", res.data.data.activities)
+        ctx.commit("setActivityTypes", res.data.data.activities)
       })
       .catch(err => {
         console.log(err)
       })
   },
 
-  fetchMemberActivities({commit}, token) {
+  fetchMemberActivities(ctx) {
 
-    const variables = {token: token}
+    const variables = {token: ctx.rootState.session.token.jwt}
 
     let query = `query ($token: String!) {
                    member(token: $token) {
@@ -131,24 +132,24 @@ export const actions = {
 
     this.$axios(r)
       .then(res => {
-        commit("setMemberActivities", res.data.data.member.activities)
+        ctx.commit("setMemberActivities", res.data.data.member.activities)
       })
       .catch(err => {
         console.log(err)
       })
   },
 
-  saveMemberActivity(ctx, {token, memberActivity}) {
+  saveMemberActivity(ctx, memberActivity) {
 
-    const variables = {token: token}
+    const variables = {token: ctx.rootState.session.token.jwt}
 
     // id is optional and is flag for update or add. Can't pass null as a value so need to exclude id if it was
     // not passed in, or is falsey
     let query = `mutation Member($token: String!) {
                    member(token: $token) {
                      saveActivity(obj: {` +
-                      (memberActivity.id ? `id: ${memberActivity.id}` : ``) +
-                      `date: "${memberActivity.date}"
+      (memberActivity.id ? `id: ${memberActivity.id}` : ``) +
+      `date: "${memberActivity.date}"
                       description: "${memberActivity.description}"
                       quantity: ${memberActivity.quantity}
                       typeId: ${memberActivity.typeId}
@@ -162,7 +163,7 @@ export const actions = {
 
     // replace newlines with a space - newlines in template literal will break the GraphQl query string
     // todo this should be a global function
-    query = query.replace(/(\r\n\t|\n|\r\t)/gm," ")
+    query = query.replace(/(\r\n\t|\n|\r\t)/gm, " ")
     // .. and extra white spaces
     query = query.replace(/\s\s+/g, ' ')
 
@@ -177,9 +178,12 @@ export const actions = {
     return this.$axios(r)
   },
 
-  deleteMemberActivity(ctx, {token, id}) {
+  deleteMemberActivity(ctx, id) {
 
-    const variables = {token: token, id: id}
+    const variables = {
+      token: ctx.rootState.session.token.jwt,
+      id: id
+    }
 
     let query = `mutation Member($token: String!, $id: Int) {
                    member(token: $token) {
@@ -195,7 +199,22 @@ export const actions = {
     }
 
     return this.$axios(r)
+  },
+
+  currentActivityReportEmail(ctx) {
+
+    let r = {
+      url: restUrl + "/m/reports/cpd/current/emailer",
+      method: "get",
+      headers: {
+        'Content-Type': 'text/plain',
+        'Authorization': 'Bearer ' + ctx.rootState.session.token.jwt
+      },
+    }
+
+    return this.$axios(r)
   }
+
 
 }
 

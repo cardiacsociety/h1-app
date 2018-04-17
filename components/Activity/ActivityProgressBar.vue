@@ -37,7 +37,7 @@
 
     methods: {
       updateProgress() {
-        this.$store.dispatch("activity/fetchCurrentEvaluation", this.$store.state.session.token.jwt)
+        this.$store.dispatch("activity/fetchCurrentEvaluation")
       }
     },
 

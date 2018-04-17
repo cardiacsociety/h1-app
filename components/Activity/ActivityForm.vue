@@ -152,10 +152,6 @@
 
     computed: {
 
-      token() {
-        return this.$store.state.session.token.jwt
-      },
-
       dateToday() {
         return new Date()
       },
@@ -239,7 +235,7 @@
 
 
       saveActivity() {
-        this.$store.dispatch("activity/saveMemberActivity", {token: this.token, memberActivity: this.form})
+        this.$store.dispatch("activity/saveMemberActivity", this.form)
           .then(res => {
             this.$root.$emit("activityUpdate") // so pages can listen for this event
             this.message.visible = true

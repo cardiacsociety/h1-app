@@ -34,25 +34,6 @@
       ActivityProgressBar,
       ActivityAddModal,
     },
-
-    // computed: {
-    //
-    //   evaluation() {
-    //     return this.$store.state.activity.currentEvaluation
-    //   },
-    //
-    //   progressPercentage() {
-    //     let p = this.evaluation.creditObtained / this.evaluation.creditRequired * 100
-    //     if (p > 100) {
-    //       p = 100
-    //     }
-    //     return p
-    //   },
-    // },
-    //
-    // beforeMount() {
-    //   this.$store.dispatch("activity/fetchCurrentEvaluation", this.$store.state.session.token.jwt)
-    // }
   }
 </script>
 

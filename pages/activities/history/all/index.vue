@@ -17,6 +17,7 @@
         </div>
 
         <div :key="a.id" v-if="currentEditIndex === a.id">
+
           <div class="message is-info activity-row-focused">
             <div class="message-header">
               Date: {{ a.date | formatDate }} - Credit: {{ a.credit }}
@@ -96,10 +97,6 @@
 
     computed: {
 
-      token() {
-        return this.$store.state.session.token.jwt
-      },
-
       memberActivities() {
         return this.$store.state.activity.memberActivities
       }
@@ -113,17 +110,17 @@
     },
 
     beforeMount() {
-      this.$store.dispatch("activity/fetchMemberActivities", this.token)
+      this.$store.dispatch("activity/fetchMemberActivities")
     },
 
     mounted() {
       // listen for updates to an activity, and rebuild the list if so
       // todo ... this should just update the relevant record instead of rebuilding the entire list
       this.$root.$on("activityUpdate", () => {
-        this.$store.dispatch("activity/fetchMemberActivities", this.token)
+        this.$store.dispatch("activity/fetchMemberActivities")
       })
       this.$root.$on("activityDelete", () => {
-        this.$store.dispatch("activity/fetchMemberActivities", this.token)
+        this.$store.dispatch("activity/fetchMemberActivities")
         this.currentEditIndex = null
       })
     }
