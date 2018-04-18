@@ -11,6 +11,10 @@
 
         <p>&nbsp;</p>
 
+        <ActivitySummaryProgress/>
+
+        <p>&nbsp;</p>
+
         <div>
           <ActivityAddModal>
             <template slot="open">
@@ -26,12 +30,14 @@
 <script>
 
   import ActivityProgressBar from '~/components/Activity/ActivityProgressBar'
+  import ActivitySummaryProgress from '~/components/Activity/ActivitySummaryProgress'
   import ActivityAddModal from '~/components/Activity/ActivityAddModal'
 
   export default {
 
     components: {
       ActivityProgressBar,
+      ActivitySummaryProgress,
       ActivityAddModal,
     },
   }

@@ -201,6 +201,20 @@ export const actions = {
     return this.$axios(r)
   },
 
+  currentActivityReport(ctx) {
+
+    let r = {
+      url: restUrl + "/m/reports/cpd/current",
+      method: "get",
+      headers: {
+        'Content-Type': 'text/plain',
+        'Authorization': 'Bearer ' + ctx.rootState.session.token.jwt
+      },
+    }
+
+    return this.$axios(r)
+  },
+
   currentActivityReportEmail(ctx) {
 
     let r = {
