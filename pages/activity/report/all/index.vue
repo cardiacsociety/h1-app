@@ -28,10 +28,10 @@
               <button class="button" disabled>Download Report</button>
             </div>
             <div v-if="state === 'request'">
-              Requesting report...
+              <button class="button is-warning is-loading">Requesting</button>
             </div>
             <div v-if="state === 'success'">
-              PDF report should be emailed to you soon!
+              <button class="button is-success">Email sent!</button>
             </div>
             <div v-if="state === 'error'">
               There was an error. Try again shortly or contact support.

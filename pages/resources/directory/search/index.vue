@@ -1,8 +1,8 @@
 <template>
   <div>
     <PageHeader
-      title="Search Members"
-      subtitle="...who have consented to being listed."
+      title="Search Member Directory"
+      subtitle="...by name, location or interest"
       :subnav="$store.state.nav.resources"
     />
     <PageSection>

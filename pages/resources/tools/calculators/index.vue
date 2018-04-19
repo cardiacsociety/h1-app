@@ -7,60 +7,50 @@
     />
     <PageSection>
 
-      <div class="box">
         <CalculatorModal>
           <template slot="open">
-            <a class="">Australian Absolute Cardiovascular Risk</a>
+            <button class="button is-dark">Australian Absolute Risk</button>
           </template>
           <template slot="calculator">
             <AACR/>
           </template>
         </CalculatorModal>
-      </div>
 
-      <div class="box">
+      <CalculatorModal>
+        <template slot="open">
+          <button class="button is-dark">CHA₂DS₂-VASc Score</button>
+        </template>
+        <template slot="calculator">
+          <CHA2DS2_VASc/>
+        </template>
+      </CalculatorModal>
+
         <CalculatorModal>
           <template slot="open">
-            <a class="">CHA₂DS₂-VASc Score</a>
-          </template>
-          <template slot="calculator">
-            <CHA2DS2_VASc/>
-          </template>
-        </CalculatorModal>
-      </div>
-
-      <div class="box">
-        <CalculatorModal>
-          <template slot="open">
-            <a class="">Creatinine Clearance</a>
+            <button class="button is-dark">Creatinine Clearance</button>
           </template>
           <template slot="calculator">
             <Creatinine_Clearance/>
           </template>
         </CalculatorModal>
-      </div>
 
-      <div class="box">
         <CalculatorModal>
           <template slot="open">
-            <a class="">Dutch Lipid Clinical Network Score</a>
+            <button class="button is-dark">Dutch Lipid Score</button>
           </template>
           <template slot="calculator">
             <Dutch_Lipid/>
           </template>
         </CalculatorModal>
-      </div>
 
-      <div class="box">
         <CalculatorModal>
           <template slot="open">
-            <a class="">HAS-BLED Score</a>
+            <button class="button is-dark">HAS-BLED Score</button>
           </template>
           <template slot="calculator">
             <HAS_BLED/>
           </template>
         </CalculatorModal>
-      </div>
 
     </PageSection>
   </div>
@@ -88,3 +78,10 @@
     }
   }
 </script>
+
+<style scoped>
+  .button {
+    width: 16rem;
+    margin-bottom: 1rem;
+  }
+</style>
