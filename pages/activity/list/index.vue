@@ -1,13 +1,13 @@
 <template>
   <div>
     <PageHeader
-      title="History"
-      subtitle="View and manage CPD activity records"
+      title="Activity List"
+      subtitle="View &amp; manage records"
       :subnav="$store.state.nav.activities"
     />
     <PageSection>
-      <h4 class="title is-4">All Activities</h4>
-      <p class="subtitle is-6">Click a record for actions.</p>
+      <h4 class="title is-4">All Activity</h4>
+      <p class="subtitle is-7">Click row for actions</p>
 
       <template v-for="a in memberActivities">
 

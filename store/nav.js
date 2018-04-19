@@ -5,8 +5,8 @@ export const state = () => ({
 
   mainMenu: [
     {
-      name: "activities",
-      to: "/activities",
+      name: "activity",
+      to: "/activity",
     },
     {
       name: "resources",
@@ -24,32 +24,17 @@ export const state = () => ({
 
   activities: [
     {
-      name: "",
-      to: "/activities/home/overview",
-      iconClass: "fa fa-home",
-      subsubnav: [
-        {
-          name: "overview",
-          to: "/activities/home/overview",
-        },
-      ],
+      name: "list",
+      to: "/activity/list",
+      iconClass: "fas fa-list",
     },
     {
-      name: "record",
-      to: "/activities/record",
-      iconClass: "fa fa-edit",
+      name: "report",
+      to: "/activity/report",
+      iconClass: "fas fa-chart-bar",
       subsubnav: [
-        {name: "new", to: "/activities/record/new"},
-        {name: "recurring", to: "/activities/record/recurring"},
-      ],
-    },
-    {
-      name: "history",
-      to: "/activities/history",
-      iconClass: "fa fa-history",
-      subsubnav: [
-        {name: "all", to: "/activities/history/all"},
-        {name: "report", to: "/activities/history/report"},
+        {name: "current", to: "/activity/report/current"},
+        {name: "all", to: "/activity/report/all"},
       ],
     },
   ],

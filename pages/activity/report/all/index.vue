@@ -24,6 +24,8 @@
           <div class="column">
             <div v-if="state === 'ready'">
               <button class="button is-warning" @click="emailReport">Email Report</button>
+              &nbsp;
+              <button class="button" disabled>Download Report</button>
             </div>
             <div v-if="state === 'request'">
               Requesting report...

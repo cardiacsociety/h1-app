@@ -1,27 +1,17 @@
 <template>
   <div>
     <PageHeader
-      title="CPD Activity Overview"
+      title="Activity Overview"
       subtitle="Shows a snapshot of progress"
       :subnav="$store.state.nav.activities"
     />
     <PageSection>
 
-        <ActivityProgressBar/>
+      <h3>Overall</h3>
+      <ActivityProgressBar/>
 
-        <p>&nbsp;</p>
-
-        <ActivitySummaryProgress/>
-
-        <p>&nbsp;</p>
-
-        <div>
-          <ActivityAddModal>
-            <template slot="open">
-              <button class="button is-success"><i class="fa fa-add"></i>&nbsp;add new</button>&nbsp;
-            </template>
-          </ActivityAddModal>
-        </div>
+      <h3>Activity Summary</h3>
+      <ActivitySummaryProgress/>
 
     </PageSection>
   </div>
@@ -31,14 +21,12 @@
 
   import ActivityProgressBar from '~/components/Activity/ActivityProgressBar'
   import ActivitySummaryProgress from '~/components/Activity/ActivitySummaryProgress'
-  import ActivityAddModal from '~/components/Activity/ActivityAddModal'
 
   export default {
 
     components: {
       ActivityProgressBar,
       ActivitySummaryProgress,
-      ActivityAddModal,
     },
   }
 </script>

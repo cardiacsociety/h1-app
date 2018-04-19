@@ -1,28 +1,26 @@
 <template>
   <div>
-    <h1>ActivitySummaryProgress</h1>
 
     <template v-for="a,i in activityData">
       <div class="columns">
-        <div class="column is-narrow">
-          <h5 class="title is-5">{{ a.activityName }}</h5>
-          <p class="subtitle is-6">
-            {{ a.activityUnits }} hours x {{ a.creditPerUnit }} credit{{ a.creditPerUnit > 1 ? 's': '' }} per hour<br>
-            = {{ a. creditTotal }} (max allowed {{ a.maxCredit }})
+        <div class="column is-3">
+          <p><span class="has-text-weight-bold">{{ a.activityName }}</span><br>
+            {{ a.activityUnits }} hours x {{ a.creditPerUnit }} credit{{ a.creditPerUnit > 1 ? 's': '' }}<br>
+            = {{ a. creditTotal }} (max {{ a.maxCredit }})
           </p>
         </div>
-        <div class="column">
+        <div class="column is-3">
           <div>
-            {{ percentage(a.creditAwarded, a.maxCredit) }}% of cap
-            <progress class="progress is-warning"
-                      :value="a.creditAwarded"
-                      :max="a.maxCredit"/>
-          </div>
-          <div>
-            {{ percentage(a.creditAwarded, totalCredit) }}% of total
+            {{ calcPercentage(a.creditAwarded, totalCredit) }}% of total
             <progress class="progress is-success"
                       :value="a.creditAwarded"
                       :max="totalCredit"/>
+          </div>
+          <div>
+            {{ calcPercentage(a.creditAwarded, a.maxCredit) }}% of max
+            <progress class="progress is-warning"
+                      :value="a.creditAwarded"
+                      :max="a.maxCredit"/>
           </div>
         </div>
       </div>
@@ -33,6 +31,9 @@
 </template>
 
 <script>
+
+  import { percentage } from '~/assets/js/calc.js'
+
   export default {
 
     data() {
@@ -42,6 +43,11 @@
     },
 
     computed: {
+
+      // return imported function
+      calcPercentage() {
+        return percentage
+      },
 
       totalCredit() {
         let total = 0
@@ -53,8 +59,8 @@
     },
 
     methods: {
-      fetchReportData() {
 
+      fetchReportData() {
         this.$store.dispatch("activity/currentActivityReport")
           .then(r => {
             console.log(r)
@@ -63,19 +69,7 @@
           .catch(r => {
             console.log(r)
           })
-
       },
-
-      percentage(numerator, denominator, places) {
-        let p = 0
-        if (numerator !== 0 && denominator !== 0) {
-          p = numerator / denominator * 100
-          if (p > 100) {
-            p = 100
-          }
-        }
-        return p.toFixed(places)
-      }
     },
 
     beforeMount() {

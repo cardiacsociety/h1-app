@@ -11,8 +11,8 @@
           intervalId: 0,
           beating: false,
           deadClr: "#F5B7B1",
-          sysClr: "#B03A2E",
-          diaClr: "#A93226",
+          sysClr: "#a95a5a",
+          diaClr: "#B03A2E",
           currentClr: "#A93226",
         }
     },

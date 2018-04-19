@@ -22,8 +22,8 @@
                      :to="l.to"
           >{{ l.name }}
           </nuxt-link>
-          <div class="navbar-item heartbeat" @click="$router.push('/auth')">
-            <HeartBeat/>
+          <div class="navbar-item">
+            <ActivityAddButton/>
           </div>
         </div>
       </div>
@@ -33,12 +33,12 @@
 
 <script>
 
-  import HeartBeat from '~/components/Auth/HeartBeat'
+  import ActivityAddButton from '~/components/Activity/ActivityAddButton'
 
   export default {
 
     components: {
-      HeartBeat,
+      ActivityAddButton,
     },
 
     data() {

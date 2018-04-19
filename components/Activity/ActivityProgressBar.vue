@@ -1,14 +1,17 @@
 <template>
   <div>
-    <div v-if="progressPercentage">
+    <div v-if="calcPercentage(evaluation.creditObtained, evaluation.creditRequired)">
+      <div>
+      {{ evaluation.name }}
+        <span class="has-text-weight-semibold">
+          {{ calcPercentage(evaluation.creditObtained, evaluation.creditRequired) }}%
+        </span> complete for period {{ evaluation.startDate | formatDate }} - {{ evaluation.endDate | formatDate }}.
+      </div>
       <progress class="progress is-large is-success"
                 :value="evaluation.creditObtained"
                 :max="evaluation.creditRequired">
-        {{ progressPercentage | round0 }}%
+        {{ calcPercentage(evaluation.creditObtained, evaluation.creditRequired) }}%
       </progress>
-      <p>{{ evaluation.name }} <span class="has-text-weight-semibold">{{ progressPercentage | round0 }}%</span>
-        complete
-        for the period {{ evaluation.startDate | formatDate }} - {{ evaluation.endDate | formatDate }}.</p>
     </div>
     <div v-else>
       <p>CPD activity report not available at this time.</p>
@@ -17,27 +20,33 @@
 </template>
 
 <script>
+
+  import {percentage} from '~/assets/js/calc.js'
+
   export default {
     name: "ActivityProgressBar",
 
     computed: {
 
-      evaluation() {
-        return this.$store.state.activity.currentEvaluation
+      // return imported function
+      calcPercentage() {
+        return percentage
       },
 
-      progressPercentage() {
-        let p = this.evaluation.creditObtained / this.evaluation.creditRequired * 100
-        if (p > 100) {
-          p = 100
-        }
-        return p
+      evaluation() {
+        return this.$store.state.activity.currentEvaluation
       },
     },
 
     methods: {
       updateProgress() {
         this.$store.dispatch("activity/fetchCurrentEvaluation")
+          .then(r => {
+            console.log(r)
+          })
+          .catch(r => {
+            console.log("Error", r)
+          })
       }
     },
 
@@ -46,6 +55,7 @@
     },
 
     mounted() {
+      console.log(this.evaluation)
       this.$root.$on("activityUpdate", () => this.updateProgress())
       this.$root.$on("activityDelete", () => this.updateProgress())
     },

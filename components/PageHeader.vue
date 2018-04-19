@@ -46,6 +46,7 @@
     <nav class="navbar has-shadow" v-if="subSubNav">
       <div class="container">
         <div class="navbar-tabs">
+
           <template v-for="item,index in subSubNav">
             <nuxt-link
               :to="item.to"
@@ -70,6 +71,7 @@
               </template>
             </nuxt-link>
           </template>
+
         </div>
       </div>
     </nav>
