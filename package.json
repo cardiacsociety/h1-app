@@ -1,7 +1,7 @@
 {
-  "name": "h1-bulma",
+  "name": "HeartOne",
   "version": "1.0.0",
-  "description": "HeartOne",
+  "description": "HeartOne CPD App from CSANZ",
   "author": "Mike Donnici",
   "private": true,
   "scripts": {
