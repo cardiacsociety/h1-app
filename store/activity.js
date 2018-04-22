@@ -1,7 +1,5 @@
-import Config from '~/config'
-
-const graphqlUrl = Config.GRAPHQL_API_BASE_URL
-const restUrl = Config.REST_API_BASE_URL
+const graphqlUrl = process.env.GRAPHQL_API_BASE_URL
+const restUrl = process.env.REST_API_BASE_URL
 
 export const state = () => ({
 

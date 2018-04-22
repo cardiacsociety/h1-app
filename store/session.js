@@ -1,8 +1,7 @@
-import Config from '~/config'
 import jwtDecode from 'jwt-decode'
 
 const tokenStorageKey = "token"
-const authUrl = Config.API_URL_AUTH
+const authUrl = process.env.REST_API_BASE_URL + "/auth/member"
 
 export const state = () => ({
   token: {

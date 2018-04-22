@@ -5,9 +5,6 @@
                 <div class="column heartbeat" @click="$router.push('/auth')">
                     <HeartBeat/>
                 </div>
-                <div class="column">
-                    env var: {{ abc123 }}
-                </div>
                 <div class="column has-text-right">
                     <ActivityAddButton/>
                 </div>
@@ -27,13 +24,6 @@
             ActivityAddButton,
             HeartBeat,
         },
-
-        computed: {
-          abc123() {
-            return process.env.ABC_123
-          }
-        }
-
     }
 </script>
 

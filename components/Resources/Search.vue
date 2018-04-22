@@ -1,9 +1,9 @@
 <template>
   <div>
     <ais-index
-      :app-id="Config.ALGOLIA_APP_ID"
-      :api-key="Config.ALGOLIA_API_KEY"
-      :index-name="Config.ALGOLIA_RESOURCES_INDEX"
+      :app-id="algoliaAppId"
+      :api-key="algoliaApiKey"
+      :index-name="algoliaResourceIndex"
       :query-parameters="{'page': page, 'snippetEllipsisText': '…'}"
     >
       <div class="field">
@@ -47,7 +47,6 @@
 </template>
 
 <script>
-  import Config from '~/config'
   import ScrollMonitor from 'scrollmonitor'
   import ActivityResourceModal from '~/components/Activity/ActivityResourceModal'
 
@@ -60,7 +59,10 @@
 
     data() {
       return {
-        Config,
+        algoliaAppId: process.env.ALGOLIA_APP_ID,
+        algoliaApiKey: process.env.ALGOLIA_API_KEY,
+        algoliaResourceIndex: process.env.ALGOLIA_RESOURCES_INDEX,
+
         page: 1,
         // solo reading is the most likely :)
         defaultActivityTypeId: 32,

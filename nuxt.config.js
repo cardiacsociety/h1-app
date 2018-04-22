@@ -82,7 +82,13 @@ module.exports = {
   },
 
   env: {
-    ABC_123: process.env.ABC_123 || "Dev value for ABC123",
+    REST_API_BASE_URL: process.env.REST_API_BASE_URL || "http://localhost:5000/v1",
+    GRAPHQL_API_BASE_URL: process.env.GRAPHQL_API_BASE_URL || "http://localhost:5001/graphql",
+    ALGOLIA_APP_ID: "MZQPVRPXFY",
+    ALGOLIA_API_KEY: "b2870abe304ad95866629a6713fd6e91",
+    ALGOLIA_DIRECTORY_INDEX: process.env.ALGOLIA_DIRECTORY_INDEX || "mappcpd_demo_DIRECTORY",
+    ALGOLIA_RESOURCES_INDEX: process.env.ALGOLIA_RESOURCES_INDEX || "mappcpd_demo_RESOURCES",
+    INVALID_EMAIL_STRINGS: process.env.INVALID_EMAIL_STRINGS || "noemailaddress,member.csanz.edu.au",
   },
 
   /*

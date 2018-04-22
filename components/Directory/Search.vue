@@ -1,9 +1,9 @@
 <template>
   <div>
     <ais-index
-      :app-id="Config.ALGOLIA_APP_ID"
-      :api-key="Config.ALGOLIA_API_KEY"
-      :index-name="Config.ALGOLIA_MEMBERS_INDEX"
+      :app-id="algoliaAppId"
+      :api-key="algoliaApiKey"
+      :index-name="algoliaDirectroyIndex"
       :auto-search="false"
       :query-parameters="{
         'page': page,
@@ -48,7 +48,6 @@
 </template>
 
 <script>
-  import Config from '~/config'
   import ScrollMonitor from 'scrollmonitor'
   import ActivityResourceModal from '~/components/Activity/ActivityResourceModal'
 
@@ -61,7 +60,11 @@
 
     data() {
       return {
-        Config,
+
+        algoliaAppId: process.env.ALGOLIA_APP_ID,
+        algoliaApiKey: process.env.ALGOLIA_API_KEY,
+        algoliaDirectroyIndex: process.env.ALGOLIA_DIRECTORY_INDEX,
+
         page: 1,
         // solo reading is the most likely :)
         defaultActivityTypeId: 32,
@@ -84,7 +87,7 @@
           return false
         }
 
-        const exclude = Config.INVALID_EMAIL_STRINGS.split(",")
+        const exclude = process.env.INVALID_EMAIL_STRINGS.split(",")
         let r = true
         exclude.forEach(e => {
           if (email.includes(e)) {

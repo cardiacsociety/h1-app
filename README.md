@@ -54,7 +54,7 @@ $navbar-item-active-color: $blue;
 @import "~bulma/bulma";
 ```
 
-The last line above loads the main bulma styles. Then need to comment out the module in `nuxt.config.js` 
+The last line above loads the main bulma styles. Then need to comment out the module in `nuxt.config.js.OFF`
 as it overrides custom values with defaults.
 
 ```javascript
