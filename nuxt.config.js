@@ -80,6 +80,11 @@ module.exports = {
       }
     }
   },
+
+  env: {
+    ABC_123: process.env.ABC_123 || "Dev value for ABC123",
+  },
+
   /*
   ** You can extend webpack config here
   */
