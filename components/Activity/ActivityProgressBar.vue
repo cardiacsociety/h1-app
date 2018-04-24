@@ -55,9 +55,8 @@
     },
 
     mounted() {
-      console.log(this.evaluation)
-      this.$root.$on("activityUpdate", () => this.updateProgress())
-      this.$root.$on("activityDelete", () => this.updateProgress())
+      this.$root.$on("activityUpdated", () => this.updateProgress())
+      this.$root.$on("activityDeleted", () => this.updateProgress())
     },
   }
 </script>

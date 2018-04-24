@@ -1,28 +1,30 @@
 <template>
-  <div>
-    <!--click wrapper as cannot listen for click on a slot-->
-    <span @click="openModal">
+    <div>
+        <!--click wrapper as cannot listen for click on a slot-->
+        <span @click="openModal">
 
       <slot name="open">open</slot>
 
     </span>
-    <div class="modal" :class="{'is-active': open}">
-      <div class="modal-background"></div>
-      <div class="modal-content">
+        <div class="modal" :class="{'is-active': open}">
+            <div class="modal-background"></div>
+            <div class="modal-content">
 
-        <div class="message is-success">
-          <div class="message-header">
-            Add CPD Activity
-            <button class="delete" @click="closeModal"></button>
-          </div>
-          <div class="message-body">
-            <ActivityForm/>
-          </div>
+                <div class="message is-success">
+                    <div class="message-header">
+                        Add CPD Activity
+                        <button class="delete" @click="closeModal"></button>
+                    </div>
+                    <div class="message-body">
+                        <template v-if="showForm">
+                            <ActivityForm/>
+                        </template>
+                    </div>
+                </div>
+
+            </div>
         </div>
-
-      </div>
     </div>
-  </div>
 </template>
 
 <script>
@@ -46,15 +48,14 @@
         open: false,
         errorAlert: false,
         errorMessage: null,
+        showForm: true,
       }
     },
 
     methods: {
-
       openModal() {
         this.open = true
       },
-
       closeModal() {
         this.open = false
       },
@@ -62,8 +63,7 @@
     },
 
     mounted() {
-      // listen for a 'close' event
-      this.$root.$on('close', () => {
+      this.$root.$on("closeModal", () => {
         this.closeModal()
       })
     },

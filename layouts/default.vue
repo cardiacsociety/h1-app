@@ -1,5 +1,7 @@
 <template>
   <div>
+    <LoadingModal/>
+    <MessageModal/>
     <nuxt/>
     <Footer/>
   </div>

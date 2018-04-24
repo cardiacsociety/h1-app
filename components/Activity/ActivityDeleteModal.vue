@@ -68,7 +68,7 @@
       deleteMemberActivity(id) {
         this.$store.dispatch("activity/deleteMemberActivity", id)
           .then(() => {
-            this.$root.$emit("activityDelete")
+            this.$root.$emit("activityDeleted")
             this.closeModal()
           })
           .catch((err) => {
@@ -78,8 +78,7 @@
     },
 
     mounted() {
-      // listen for a 'close' event
-      this.$root.$on('close', () => {
+      this.$root.$on("activityUpdated", () => {
         this.closeModal()
       })
     },

@@ -16,7 +16,7 @@
           {{ a.description }}
         </div>
 
-        <div :key="a.id" v-if="currentEditIndex === a.id">
+        <div :key="a.id" :id="a.id" v-if="currentEditIndex === a.id">
 
           <div class="message is-info activity-row-focused">
             <div class="message-header">
@@ -116,10 +116,10 @@
     mounted() {
       // listen for updates to an activity, and rebuild the list if so
       // todo ... this should just update the relevant record instead of rebuilding the entire list
-      this.$root.$on("activityUpdate", () => {
+      this.$root.$on("activityUpdated", () => {
         this.$store.dispatch("activity/fetchMemberActivities")
       })
-      this.$root.$on("activityDelete", () => {
+      this.$root.$on("activityDeleted", () => {
         this.$store.dispatch("activity/fetchMemberActivities")
         this.currentEditIndex = null
       })

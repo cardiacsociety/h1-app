@@ -61,8 +61,10 @@
     },
 
     mounted() {
-      // listen for a 'close' event
-      this.$root.$on('close', () => {
+      this.$root.$on("activityUpdated", () => {
+        this.closeModal()
+      })
+      this.$root.$on("cancel", () => {
         this.closeModal()
       })
 
