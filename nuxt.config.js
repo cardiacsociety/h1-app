@@ -40,6 +40,7 @@ module.exports = {
     '~plugins/date-filters',
     '~plugins/instantsearch',
     '~plugins/vee-validate',
+    '~plugins/scrollto',
 
     // can only get customisations to work by using script tag in default layout
     // example: https://github.com/rafaelpimpa/buefy-simple/blob/master/src/App.vue

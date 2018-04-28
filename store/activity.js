@@ -11,6 +11,10 @@ export const state = () => ({
 
   // memberActivities is a list of all of the activities recorded by the member
   memberActivities: [],
+
+  // (EXPERIMENTAL)
+  selectedMemberActivityId: null,
+
 })
 
 export const mutations = {
@@ -26,6 +30,12 @@ export const mutations = {
   setMemberActivities(state, memberActivities) {
     state.memberActivities = memberActivities
   },
+
+  setSelectedMemberActivityId(state, id) {
+    state.selectedMemberActivityId = id
+  }
+
+
 }
 
 export const actions = {
@@ -100,6 +110,8 @@ export const actions = {
   },
 
   fetchMemberActivities(ctx) {
+
+    console.log("Fetch member activities")
 
     const variables = {token: ctx.rootState.session.token.jwt}
 
@@ -251,5 +263,13 @@ export const getters = {
 
     return a
   },
+
+  selectedMemberActivity(state) {
+    for (let i = 0; i < state.memberActivities.length; i++) {
+      if (state.memberActivities[i].id === state.selectedMemberActivityId) {
+        return state.memberActivities[i]
+      }
+    }
+  }
 
 }

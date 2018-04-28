@@ -1,76 +1,92 @@
 <template>
-  <div>
-    <PageHeader
-      title="Activity List"
-      subtitle="View &amp; manage records"
-      :subnav="$store.state.nav.activities"
-    />
-    <PageSection>
-      <h4 class="title is-4">All Activity</h4>
-      <p class="subtitle is-7">Click row for actions</p>
+    <div id="top">
+        <PageHeader
+                title="Activity List"
+                subtitle="View &amp; manage records"
+                :subnav="$store.state.nav.activities"
+        />
+        <PageSection>
+            <h4 class="title is-4">All Activity</h4>
+            <p class="subtitle is-7">Click row for actions</p>
 
-      <template v-for="a in memberActivities">
+            <template v-for="a in memberActivities">
 
-        <div class="notification activity-row" :key="a.id" @click="currentEditIndex = a.id" v-if="currentEditIndex != a.id">
-          <span class="is-size-7">{{ a.date }}: {{ a.activity }} - {{ a.type }}</span><br>
-          {{ a.description }}
-        </div>
+                <div :id="'aid-' + a.id"></div>
 
-        <div :key="a.id" :id="a.id" v-if="currentEditIndex === a.id">
-
-          <div class="message is-info activity-row-focused">
-            <div class="message-header">
-              Date: {{ a.date | formatDate }} - Credit: {{ a.credit }}
-              <button class="delete" @click="currentEditIndex = null"></button>
-            </div>
-            <div class="message-body">
-              <p class="has-text-weight-bold">
-                {{ a.activity }} <span v-if="a.typeId"> - {{ a.type }}</span>
-              </p>
-              <p class="is-italic">
-                {{ a.description }}
-              </p>
-              <div class="level is-mobile">
-                <div class="level-left">
-                  <div class="level-item" v-if="a.typeId">
-                    <ActivityEditModal :activityData="a">
-                      <template slot="open">
-                        <button class="button is-small is-warning"><i class="fa fa-edit"></i>&nbsp;edit</button>&nbsp;
-                      </template>
-                    </ActivityEditModal>
-                  </div>
-                  <div class="level-item" v-else>
-                    <HelpModal name="CANNOT_EDIT_ACTIVITY">
-                      <template slot="open">
-                        <button class="button is-small"><i class="fa fa-ban"></i>&nbsp;edit</button>&nbsp;
-                      </template>
-                    </HelpModal>
-                  </div>
-                  <div class="level-item">
-                    <ActivityCopyModal :activityData="a">
-                      <template slot="open">
-                        <button class="button is-small is-success"><i class="fa fa-copy"></i>&nbsp;copy</button>&nbsp;
-                      </template>
-                    </ActivityCopyModal>
-                  </div>
-                  <div class="level-item">
-                    <ActivityDeleteModal :activityData="a">
-                      <template slot="open">
-                        <button class="button is-small is-danger"><i class="fa fa-times"></i>&nbsp;delete</button>&nbsp;
-                      </template>
-                    </ActivityDeleteModal>
-                  </div>
+                <div
+                        class="notification activity-row"
+                        :key="a.id"
+                        v-if="currentEditId != a.id"
+                        @click="setCurrentEditId(a.id)"
+                >
+                    <span class="is-size-7">{{ a.date }}: {{ a.activity }} - {{ a.type }}</span><br>
+                    {{ a.description }}
                 </div>
-              </div>
 
-            </div>
-          </div>
-        </div>
+                <div :key="a.id" v-if="currentEditId == a.id">
 
-      </template>
+                    <div class="message is-info activity-row-focused">
+                        <div class="message-header">
+                            Date: {{ a.date | formatDate }} - Credit: {{ a.credit }}
+                            <button class="delete" @click="currentEditId = null"></button>
+                        </div>
+                        <div class="message-body">
+                            <p class="has-text-weight-bold">
+                                {{ a.activity }} <span v-if="a.typeId"> - {{ a.type }}</span>
+                            </p>
+                            <p class="is-italic">
+                                {{ a.description }}
+                            </p>
+                            <div class="level is-mobile">
+                                <div class="level-left">
+                                    <div class="level-item" v-if="a.typeId">
+                                        <ActivityEditModal :activityData="currentEditActivity" :autoOpen="autoOpenEdit">
+                                            <template slot="open">
+                                                <button class="button is-small is-warning"><i class="fa fa-edit"></i>&nbsp;edit
+                                                </button>&nbsp;
+                                            </template>
+                                        </ActivityEditModal>
+                                    </div>
+                                    <div class="level-item" v-else>
+                                        <HelpModal name="CANNOT_EDIT_ACTIVITY">
+                                            <template slot="open">
+                                                <button class="button is-small"><i class="fa fa-ban"></i>&nbsp;edit
+                                                </button>&nbsp;
+                                            </template>
+                                        </HelpModal>
+                                    </div>
+                                    <div class="level-item">
+                                        <ActivityCopyModal :activityData="currentEditActivity">
+                                            <template slot="open">
+                                                <button class="button is-small is-success"><i class="fa fa-copy"></i>&nbsp;copy
+                                                </button>&nbsp;
+                                            </template>
+                                        </ActivityCopyModal>
+                                    </div>
+                                    <div class="level-item">
+                                        <ActivityDeleteModal :activityData="a">
+                                            <template slot="open">
+                                                <button class="button is-small is-danger"><i class="fa fa-times"></i>&nbsp;delete
+                                                </button>&nbsp;
+                                            </template>
+                                        </ActivityDeleteModal>
+                                    </div>
+                                </div>
+                            </div>
 
-    </PageSection>
-  </div>
+                        </div>
+                    </div>
+                </div>
+
+            </template>
+
+            <p class="buttons">
+                <button class="button is-link" @click="scrollToTop">top</button>
+                <button class="button is-link" @click="scrollTo(currentEditId)">selected</button>
+            </p>
+
+        </PageSection>
+    </div>
 </template>
 
 <script>
@@ -91,7 +107,8 @@
 
     data() {
       return {
-        currentEditIndex: null,
+        currentEditId: null,
+        autoOpenEdit: false,
       }
     },
 
@@ -99,14 +116,57 @@
 
       memberActivities() {
         return this.$store.state.activity.memberActivities
-      }
+      },
+
+      // This ensures a fresh copy from the store
+      currentEditActivity() {
+        let activity = {}
+        this.$store.state.activity.memberActivities.forEach((a) => {
+          if (a.id == this.currentEditId) {
+            activity = a
+          }
+        })
+        return activity
+      },
     },
 
     methods: {
 
-      openModal() {
-        alert("edit this")
+      scrollToTop() {
+        this.$scrollTo('#top')
       },
+
+      scrollTo(id) {
+        this.$scrollTo('#aid-' + id)
+      },
+
+      scrollToAndSelect(id) {
+        this.currentEditId = id
+        this.scrollTo(id)
+      },
+
+      scrollToAndEdit(id) {
+        this.autoOpenEdit = true
+        this.currentEditId = id
+        this.scrollTo(id)
+      },
+
+      setCurrentEditId(id) {
+        this.autoOpenEdit = false
+        this.currentEditId = id
+      },
+
+      // unset and reset the currentEditId to make that part of the DOM re-render
+      refreshEditId() {
+        console.log("refreshEditId")
+        let id = this.currentEditId
+        this.currentEditId = null
+        // setTimeout(() => {
+        //   this.currentEditId = id
+        // }, 2000)
+
+      },
+
     },
 
     beforeMount() {
@@ -114,41 +174,56 @@
     },
 
     mounted() {
+
       // listen for updates to an activity, and rebuild the list if so
       // todo ... this should just update the relevant record instead of rebuilding the entire list
-      this.$root.$on("activityUpdated", () => {
+      this.$root.$on("activityUpdated", (id) => {
+        this.scrollToTop()
         this.$store.dispatch("activity/fetchMemberActivities")
+          .then(() => {
+            console.log("After update need to scroll to and select the updated activity id " + id)
+            //this.refreshEditId()
+            setTimeout(() => {
+              this.scrollToAndSelect(id)
+            }, 2000)
+          })
       })
       this.$root.$on("activityDeleted", () => {
         this.$store.dispatch("activity/fetchMemberActivities")
-        this.currentEditIndex = null
+        this.currentEditId = null
       })
+
+      // query options - scroll=1234, select=1234, edit=1234
+      if (this.$route.query.scroll) {
+        this.scrollTo(this.$route.query.scroll)
+      }
+      if (this.$route.query.select) {
+        this.scrollToAndSelect(this.$route.query.select)
+      }
+      if (this.$route.query.edit) {
+        this.scrollToAndEdit(this.$route.query.edit)
+      }
     }
   }
 </script>
 
 <style scoped>
-  .activity-row {
-    margin-bottom: 10px;
-  }
+    .activity-row {
+        margin-bottom: 10px;
+    }
 
-  .activity-row-focused {
-    margin-top: 15px;
-    margin-bottom: 15px;
-  }
+    .activity-row-focused {
+        margin-top: 15px;
+        margin-bottom: 15px;
+    }
 
-  .activity-row:hover {
-    cursor: pointer;
-    background-color: #f1f1f1;
-  }
+    .activity-row:hover {
+        cursor: pointer;
+        background-color: #f1f1f1;
+    }
 
-  .activity-row-focused:hover {
-    cursor: default;
-  }
-
-  .field-name {
-    display: inline-block;
-    width: 3.6rem;
-  }
+    .activity-row-focused:hover {
+        cursor: default;
+    }
 
 </style>

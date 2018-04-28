@@ -1,28 +1,14 @@
 <template>
-  <div>
-    <!--click wrapper as cannot listen for click on a slot-->
-    <span @click="openModal">
-
-      <slot name="open">open</slot>
-
-    </span>
-    <div class="modal" :class="{'is-active': open}">
-      <div class="modal-background"></div>
-      <div class="modal-content">
-
-        <div class="message is-warning">
-          <div class="message-header">
-            Edit CPD Activity - ID {{ activityData.id }}
-            <button class="delete" @click="closeModal"></button>
-          </div>
-          <div class="message-body">
-            <ActivityForm :activityData="activityData"/>
-          </div>
+    <div>
+        <!--click wrapper as cannot listen for click on a slot-->
+        <span @click="openModal"><slot name="open">open</slot></span>
+        <div class="modal" :class="{'is-active': open}">
+            <div class="modal-background"></div>
+            <div class="modal-content">
+                <ActivityForm :activityData="activityData"/>
+            </div>
         </div>
-
-      </div>
     </div>
-  </div>
 </template>
 
 <script>
@@ -31,9 +17,12 @@
   export default {
 
     props: {
-      // Option to pre-populate activity form
       activityData: {
         type: Object,
+      },
+      autoOpen: {
+        type: Boolean,
+        default: false
       },
     },
 
@@ -44,17 +33,13 @@
     data() {
       return {
         open: false,
-        errorAlert: false,
-        errorMessage: null,
       }
     },
 
     methods: {
-
       openModal() {
         this.open = true
       },
-
       closeModal() {
         this.open = false
       },
@@ -68,6 +53,9 @@
         this.closeModal()
       })
 
+      if (this.autoOpen) {
+        this.openModal()
+      }
     },
   }
 </script>

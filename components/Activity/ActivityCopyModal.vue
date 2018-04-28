@@ -1,28 +1,17 @@
 <template>
-  <div>
-    <!--click wrapper as cannot listen for click on a slot-->
-    <span @click="openModal">
-
-      <slot name="open">open</slot>
-
-    </span>
-    <div class="modal" :class="{'is-active': open}">
-      <div class="modal-background"></div>
-      <div class="modal-content">
-
-        <div class="message is-success">
-          <div class="message-header">
-            Copy CPD Activity - ID {{ activityData.id }}
-            <button class="delete" @click="closeModal"></button>
-          </div>
-          <div class="message-body">
-            <ActivityForm :activityData="activityWithoutID"/>
-          </div>
+    <div>
+        <!--click wrapper as cannot listen for click on a slot-->
+        <span @click="openModal"><slot name="open">open</slot></span>
+        <div class="modal" :class="{'is-active': open}">
+            <div class="modal-background"></div>
+            <div class="modal-content">
+                <ActivityForm :activityData="activityWithoutID"/>
+                <div class="box">
+                    {{ activityWithoutID }}
+                </div>
+            </div>
         </div>
-
-      </div>
     </div>
-  </div>
 </template>
 
 <script>
@@ -43,16 +32,25 @@
     data() {
       return {
         open: false,
-        errorAlert: false,
-        errorMessage: null,
       }
     },
 
     computed: {
+
+      memberActivities() {
+        return this.$store.state.activity.memberActivities
+      },
+
       activityWithoutID() {
-        return this.unsetID(this.activityData)
-      }
+        for (let i = 0; i < this.memberActivities.length; i++) {
+          if (this.memberActivities[i].id == this.activityData.id) {
+            return this.unsetID(this.memberActivities[i])
+          }
+        }
+      },
+
     },
+
 
     methods: {
       openModal() {
@@ -72,8 +70,7 @@
     },
 
     mounted() {
-      // listen for a 'close' event
-      this.$root.$on('close', () => {
+      this.$root.$on('cancel', () => {
         this.closeModal()
       })
     },

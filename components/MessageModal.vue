@@ -18,6 +18,13 @@
                     </div>
                 </div>
                 <p>{{ messageBody }}</p>
+                <template v-if="messageArray">
+                    <ul>
+                        <li v-for="msg in messageArray">
+                            {{ msg }}
+                        </li>
+                    </ul>
+                </template>
             </div>
         </div>
     </div>
@@ -59,6 +66,7 @@
         messageType: "info",
         messageTitle: "",
         messageBody: "",
+        messageArray: [],
         messageMilliseconds: 0,
         timerId: null,
       }
@@ -107,6 +115,7 @@
         this.messageType = msg.class
         this.messageTitle = msg.title
         this.messageBody = msg.body
+        this.messageArray = msg.list
         this.messageMilliseconds = msg.ttl
         this.openModal()
 

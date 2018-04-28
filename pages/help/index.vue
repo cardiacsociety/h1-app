@@ -38,6 +38,14 @@
                 </button>
             </p>
 
+
+            <p class="buttons">
+                <button class="button" @click="$router.push('/activity/list?scroll=5717')">scroll to 5717</button>
+                <button class="button" @click="$router.push('/activity/list?select=5717')">scroll to and semi-open 5717</button>
+                <button class="button" @click="$router.push('/activity/list?edit=5805')">scroll to and edit 5805</button>
+            </p>
+
+
         </PageSection>
     </div>
 </template>

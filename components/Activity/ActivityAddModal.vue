@@ -1,27 +1,13 @@
 <template>
     <div>
         <!--click wrapper as cannot listen for click on a slot-->
-        <span @click="openModal">
-
-      <slot name="open">open</slot>
-
-    </span>
+        <span @click="openModal"><slot name="open">open</slot></span>
         <div class="modal" :class="{'is-active': open}">
             <div class="modal-background"></div>
             <div class="modal-content">
-
-                <div class="message is-success">
-                    <div class="message-header">
-                        Add CPD Activity
-                        <button class="delete" @click="closeModal"></button>
-                    </div>
-                    <div class="message-body">
-                        <template v-if="showForm">
-                            <ActivityForm/>
-                        </template>
-                    </div>
-                </div>
-
+                <template v-if="showForm">
+                    <ActivityForm/>
+                </template>
             </div>
         </div>
     </div>
@@ -31,13 +17,6 @@
   import ActivityForm from "~/components/Activity/ActivityForm"
 
   export default {
-
-    props: {
-      // Option to pre-populate activity form
-      activityData: {
-        type: Object,
-      },
-    },
 
     components: {
       ActivityForm,
@@ -63,9 +42,23 @@
     },
 
     mounted() {
-      this.$root.$on("closeModal", () => {
+
+      this.$root.$on("cancel", () => {
         this.closeModal()
       })
+
+      // todo - delay when scrolling to edit
+      // go and edit ... works from everywhere except the list page itself... because the new record is not yet
+      // in the DOM when this runs... so might need some kind of delay, or could direct to another page then back again?
+      // where we catch this event the activity Update list might not yet have completed... this will be an issue.
+      // trying this... dispatch update from here and once it is done, go to edit list
+      // this.$root.$on("activityUpdated", (id) => {
+      //   console.log("Heard activityUpdated in mounted() in ActivityAddModal")
+      //   this.$store.dispatch("activity/fetchMemberActivities")
+      //     .then(() => {
+      //       this.$router.push("/activity/list?edit=" + id)
+      //     })
+      // })
     },
   }
 </script>
