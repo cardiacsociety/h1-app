@@ -6,9 +6,6 @@
             <div class="modal-background"></div>
             <div class="modal-content">
                 <ActivityForm :activityData="activityWithoutID"/>
-                <div class="box">
-                    {{ activityWithoutID }}
-                </div>
             </div>
         </div>
     </div>

@@ -141,8 +141,8 @@
                     <!--<div>mode: {{ saveMode }}</div>-->
                     <!--<div>valid: {{ valid }}</div>-->
                     <!--<div>errors: {{ errors.items }}</div>-->
-                    <div>props: {{ activityData }}</div>
-                    <div>form: {{ form }}</div>
+                    <!--<div>props: {{ activityData }}</div>-->
+                    <!--<div>form: {{ form }}</div>-->
 
                 </div>
             </div>
@@ -265,8 +265,6 @@
       },
 
       syncFormToProps() {
-
-        console.log("Running syncFormToProps()")
 
         // activityData object can be used to initialise the local activity object
         if (this.activityData) {

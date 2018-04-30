@@ -82,7 +82,7 @@
 
             <p class="buttons">
                 <button class="button is-link" @click="scrollToTop">top</button>
-                <button class="button is-link" @click="scrollTo(currentEditId)">selected</button>
+                <button class="button is-link" @click="scrollTo(currentEditId)" v-if="currentEditId">selected</button>
             </p>
 
         </PageSection>
@@ -156,15 +156,15 @@
         this.currentEditId = id
       },
 
-      // unset and reset the currentEditId to make that part of the DOM re-render
-      refreshEditId() {
-        console.log("refreshEditId")
-        let id = this.currentEditId
-        this.currentEditId = null
-        // setTimeout(() => {
-        //   this.currentEditId = id
-        // }, 2000)
-
+      // refreshSelectedActivity unsets, and then resets the currentEditId to ensure that the props (activityData) being
+      // passed to the edit and copy modal components are updated in the DOM. Otherwise, if a user edited and saved a
+      // record and then clicked the copy button immediately after, the props that get passed to the activity form are
+      // the values prior to the edit - as they are sitting there in the DOM unmodified after the edit.
+      refreshSelectedActivity(id) {
+        this.currentEditId = 0
+        setTimeout(() => {
+          this.scrollToAndSelect(id) // reselects the same row and we get fresh props
+        }, 2000)
       },
 
     },
@@ -181,13 +181,10 @@
         this.scrollToTop()
         this.$store.dispatch("activity/fetchMemberActivities")
           .then(() => {
-            console.log("After update need to scroll to and select the updated activity id " + id)
-            //this.refreshEditId()
-            setTimeout(() => {
-              this.scrollToAndSelect(id)
-            }, 2000)
+            this.refreshSelectedActivity(id)
           })
       })
+
       this.$root.$on("activityDeleted", () => {
         this.$store.dispatch("activity/fetchMemberActivities")
         this.currentEditId = null
