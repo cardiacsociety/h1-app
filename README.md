@@ -54,7 +54,7 @@ $navbar-item-active-color: $blue;
 @import "~bulma/bulma";
 ```
 
-The last line above loads the main bulma styles. Then need to comment out the module in `nuxt.config.js.OFF`
+The last line above loads the main bulma styles. Then need to comment out the module in `nuxt.config.js`
 as it overrides custom values with defaults.
 
 ```javascript
@@ -64,14 +64,4 @@ as it overrides custom values with defaults.
   ]
 }
 ```
-
-This seems convoluted and I'm sure I'm missing something. Obviously don't actually need the Bulma module 
-with this setup as it is not being used. Could simply install bulma alone.
-
 Some more info here: http://bgraphic.no/using-bulma-font-awsome-nuxt/
-
-
-  
-
-
-
